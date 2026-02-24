@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "+1MvI9uvG40=",
+  "dgSpecHash": "Blwpvh+lbLo=",
   "success": true,
   "projectFilePath": "C:\\Users\\v-connguyen\\source\\repos\\IotGrpcLearning\\IotGrpcLearning\\IotGrpcLearning.csproj",
   "expectedPackageFiles": [
@@ -12,7 +12,13 @@
     "C:\\Users\\v-connguyen\\.nuget\\packages\\grpc.net.client\\2.64.0\\grpc.net.client.2.64.0.nupkg.sha512",
     "C:\\Users\\v-connguyen\\.nuget\\packages\\grpc.net.clientfactory\\2.64.0\\grpc.net.clientfactory.2.64.0.nupkg.sha512",
     "C:\\Users\\v-connguyen\\.nuget\\packages\\grpc.net.common\\2.64.0\\grpc.net.common.2.64.0.nupkg.sha512",
-    "C:\\Users\\v-connguyen\\.nuget\\packages\\grpc.tools\\2.64.0\\grpc.tools.2.64.0.nupkg.sha512"
+    "C:\\Users\\v-connguyen\\.nuget\\packages\\grpc.tools\\2.64.0\\grpc.tools.2.64.0.nupkg.sha512",
+    "C:\\Users\\v-connguyen\\.nuget\\packages\\microsoft.extensions.apidescription.server\\10.0.0\\microsoft.extensions.apidescription.server.10.0.0.nupkg.sha512",
+    "C:\\Users\\v-connguyen\\.nuget\\packages\\microsoft.openapi\\2.4.1\\microsoft.openapi.2.4.1.nupkg.sha512",
+    "C:\\Users\\v-connguyen\\.nuget\\packages\\swashbuckle.aspnetcore\\10.1.4\\swashbuckle.aspnetcore.10.1.4.nupkg.sha512",
+    "C:\\Users\\v-connguyen\\.nuget\\packages\\swashbuckle.aspnetcore.swagger\\10.1.4\\swashbuckle.aspnetcore.swagger.10.1.4.nupkg.sha512",
+    "C:\\Users\\v-connguyen\\.nuget\\packages\\swashbuckle.aspnetcore.swaggergen\\10.1.4\\swashbuckle.aspnetcore.swaggergen.10.1.4.nupkg.sha512",
+    "C:\\Users\\v-connguyen\\.nuget\\packages\\swashbuckle.aspnetcore.swaggerui\\10.1.4\\swashbuckle.aspnetcore.swaggerui.10.1.4.nupkg.sha512"
   ],
   "logs": []
 }

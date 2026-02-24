@@ -16,6 +16,7 @@ namespace IotGrpcLearning.Services
 
 	public interface IDeviceRegistry
 	{
+		void InitDevice(string deviceId);
 		void MarkConnected(string deviceId);
 		void MarkDisconnected(string deviceId);
 		void UpdateStatus(DeviceStatusResponse status);
@@ -26,6 +27,16 @@ namespace IotGrpcLearning.Services
 	public sealed class DeviceRegistry : IDeviceRegistry
 	{
 		private readonly ConcurrentDictionary<string, DeviceSnapshot> _devices = new(StringComparer.OrdinalIgnoreCase);
+		public void InitDevice(string deviceId)
+		{
+			var snap = _devices.GetOrAdd(deviceId, id => new DeviceSnapshot
+			{
+				DeviceId = id,
+				LastSeenUnixMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
+			});
+			snap.Connected = false;
+		}
+
 		public void MarkConnected(string deviceId)
 		{
 			var snap = _devices.GetOrAdd(deviceId, id => new DeviceSnapshot

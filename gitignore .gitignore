@@ -1,0 +1,62 @@
+# Visual Studio / .NET default ignores
+.vs/
+.vscode/
+.idea/
+
+# Build outputs
+bin/
+obj/
+artifacts/
+
+# User-specific files
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Rider
+.idea/
+*.sln.iml
+
+# NuGet packages
+*.nupkg
+packages/
+project.lock.json
+packages.lock.json
+
+# Dotnet publish / runtime outputs
+publish/
+*.RuntimeConfig.*
+*.deps.json
+
+# Resharper
+_ReSharper*/
+*.DotSettings.user
+
+# OS files
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Temporary files
+*.tmp
+*.temp
+
+# Certificates and secrets
+secrets.json
+*.pfx
+*.key
+.env
+
+# Test results
+TestResults/
+*.trx
+coverage/
+
+# Generated files
+obj/**/*.generated.cs
+
+# JetBrains Rider caches (optional)
+.idea/

@@ -35,8 +35,10 @@ public class DeviceGatewayService : DeviceGateway.DeviceGatewayBase
 			Message = $"Welcome {deviceId}! Gateway online.",
 			ServerUnixMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
 		};
+		_registry.InitDevice(deviceId);
+	
 
-		return Task.FromResult(reply);
+        return Task.FromResult(reply);
 	}
 
 

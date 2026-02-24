@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("DevicesSimulator")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+73c40e455a682f8d4e4d58b502c6fd757b016f25")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+71de4e83efd7b4beeb1cd312501cd2efa353755d")]
 [assembly: System.Reflection.AssemblyProductAttribute("DevicesSimulator")]
 [assembly: System.Reflection.AssemblyTitleAttribute("DevicesSimulator")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
