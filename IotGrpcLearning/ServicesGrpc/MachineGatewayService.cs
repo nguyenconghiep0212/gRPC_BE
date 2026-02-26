@@ -1,16 +1,18 @@
 ﻿using Grpc.Core;
+using IotGrpcLearning.Interfaces;
 using IotGrpcLearning.Proto;
+using IotGrpcLearning.Services;
 using System.Net.NetworkInformation;
 
-namespace IotGrpcLearning.Services;
+namespace IotGrpcLearning.GrpcServices;
 
-public class DeviceGatewayService : DeviceGateway.DeviceGatewayBase
+public class MachineGatewayService : DeviceGateway.DeviceGatewayBase
 {
-	private readonly ILogger<DeviceGatewayService> _logger;
+	private readonly ILogger<MachineGatewayService> _logger;
 	private readonly ICommandBus _commandBus;
-	private readonly IDeviceRegistry _registry;
+	private readonly IMachineRegistry _registry;
 
-	public DeviceGatewayService(ILogger<DeviceGatewayService> logger, ICommandBus commandBus, IDeviceRegistry registry)
+	public MachineGatewayService(ILogger<MachineGatewayService> logger, ICommandBus commandBus, IMachineRegistry registry)
 	{
 		_logger = logger;
 		_commandBus = commandBus;
@@ -35,7 +37,7 @@ public class DeviceGatewayService : DeviceGateway.DeviceGatewayBase
 			Message = $"Welcome {deviceId}! Gateway online.",
 			ServerUnixMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
 		};
-		_registry.InitDevice(deviceId);
+		_registry.InitMachine(deviceId);
 	
 
         return Task.FromResult(reply);

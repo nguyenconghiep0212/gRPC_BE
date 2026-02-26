@@ -1,6 +1,10 @@
+using IotGrpcLearning.GrpcServices;
+using IotGrpcLearning.Infrastructure;
+using IotGrpcLearning.Interfaces;
 using IotGrpcLearning.Proto;
 using IotGrpcLearning.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.Data.Sqlite;
 
 namespace IotGrpcLearning
 {
@@ -15,29 +19,28 @@ namespace IotGrpcLearning
 
 			// REST API (MVC Controllers)
 			builder.Services.AddControllers();
-
-			// DI: registry + command bus
-			builder.Services.AddSingleton<ICommandBus, InMemoryCommandBus>();
-			builder.Services.AddSingleton<IDeviceRegistry, DeviceRegistry>();
-
-			// Vue dev server default: http://localhost:5173
 			builder.Services.AddCors(o =>
 			{
 				o.AddPolicy("ui", p => p
-					.WithOrigins("http://localhost:5173")
+					.WithOrigins("http://localhost:5173") // Vue dev server default
 					.AllowAnyHeader()
 					.AllowAnyMethod());
 			});
-
-			// Swagger (optional but very “enterprise”)
 			builder.Services.AddEndpointsApiExplorer();
 			builder.Services.AddSwaggerGen();
+
+			// Validate and register Sqlite connection factory (extension handles validation and registration)
+			builder.AddValidatedSqlite();
+
+			builder.Services.AddSingleton<ICommandBus, InMemoryCommandBus>();
+			builder.Services.AddSingleton<IMachineRegistry, MachineRegistry>();
+			builder.Services.AddSingleton<IMachineService, MachineService>();
+			builder.Services.AddSingleton<IVendor, VendorService>();
+			builder.Services.AddSingleton<ICustomer, CustomerService>();
 
 			var app = builder.Build();
 
 			app.UseCors("ui");
-
-			// Swagger (optional)
 			app.UseSwagger();
 			app.UseSwaggerUI();
 
@@ -45,7 +48,7 @@ namespace IotGrpcLearning
 			app.MapControllers();
 
 			// Map gRPC services
-			app.MapGrpcService<DeviceGatewayService>();
+			app.MapGrpcService<MachineGatewayService>();
 
 			app.MapGet("/", () => "Device Gateway running. REST: /api, gRPC: DeviceGateway");
 

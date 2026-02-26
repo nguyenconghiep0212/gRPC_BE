@@ -5,10 +5,58 @@
     "version": "1.0"
   },
   "paths": {
-    "/api/devices/list": {
+    "/api/customers/create": {
+      "post": {
+        "tags": [
+          "Customer"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/CustomerDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/CustomerDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/customers/list": {
       "get": {
         "tags": [
-          "Devices"
+          "Customer"
         ],
         "responses": {
           "200": {
@@ -18,7 +66,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DeviceDto"
+                    "$ref": "#/components/schemas/CustomerDto"
                   }
                 }
               },
@@ -26,7 +74,7 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DeviceDto"
+                    "$ref": "#/components/schemas/CustomerDto"
                   }
                 }
               },
@@ -34,7 +82,64 @@
                 "schema": {
                   "type": "array",
                   "items": {
-                    "$ref": "#/components/schemas/DeviceDto"
+                    "$ref": "#/components/schemas/CustomerDto"
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/": {
+      "get": {
+        "tags": [
+          "IotGrpcLearning"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/devices/list": {
+      "get": {
+        "tags": [
+          "Machines"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MachineDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MachineDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/MachineDto"
                   }
                 }
               }
@@ -46,7 +151,7 @@
     "/api/devices/{deviceId}/detail": {
       "get": {
         "tags": [
-          "Devices"
+          "Machines"
         ],
         "parameters": [
           {
@@ -64,17 +169,17 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeviceDto"
+                  "$ref": "#/components/schemas/MachineDto"
                 }
               },
               "application/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeviceDto"
+                  "$ref": "#/components/schemas/MachineDto"
                 }
               },
               "text/json": {
                 "schema": {
-                  "$ref": "#/components/schemas/DeviceDto"
+                  "$ref": "#/components/schemas/MachineDto"
                 }
               }
             }
@@ -82,10 +187,58 @@
         }
       }
     },
-    "/api/devices/{deviceId}/commands": {
+    "/api/devices/create": {
       "post": {
         "tags": [
-          "Devices"
+          "Machines"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MachineDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/MachineDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/MachineDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/MachineDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MachineDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/MachineDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/devicesRegistry/{deviceId}/commands": {
+      "post": {
+        "tags": [
+          "MachinesRegistry"
         ],
         "parameters": [
           {
@@ -123,10 +276,58 @@
         }
       }
     },
-    "/": {
+    "/api/vendors/create": {
+      "post": {
+        "tags": [
+          "Vendor"
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VendorDto"
+              }
+            },
+            "text/json": {
+              "schema": {
+                "$ref": "#/components/schemas/VendorDto"
+              }
+            },
+            "application/*+json": {
+              "schema": {
+                "$ref": "#/components/schemas/VendorDto"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "OK",
+            "content": {
+              "text/plain": {
+                "schema": {
+                  "$ref": "#/components/schemas/VendorDto"
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VendorDto"
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/VendorDto"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/vendors/list": {
       "get": {
         "tags": [
-          "IotGrpcLearning"
+          "Vendor"
         ],
         "responses": {
           "200": {
@@ -134,7 +335,26 @@
             "content": {
               "text/plain": {
                 "schema": {
-                  "type": "string"
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VendorDto"
+                  }
+                }
+              },
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VendorDto"
+                  }
+                }
+              },
+              "text/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/VendorDto"
+                  }
                 }
               }
             }
@@ -165,14 +385,32 @@
         },
         "additionalProperties": false
       },
-      "DeviceDto": {
+      "CustomerDto": {
         "type": "object",
         "properties": {
-          "deviceId": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
             "type": "string",
             "nullable": true
+          }
+        },
+        "additionalProperties": false
+      },
+      "MachineDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
           },
-          "health": {
+          "machineInfoId": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
             "type": "string",
             "nullable": true
           },
@@ -180,18 +418,38 @@
             "type": "string",
             "nullable": true
           },
-          "connected": {
-            "type": "boolean"
-          },
-          "lastSeenUnixMs": {
+          "vendor": {
             "type": "integer",
-            "format": "int64"
+            "format": "int32"
           },
-          "tags": {
-            "type": "object",
-            "additionalProperties": {
-              "type": "string"
-            },
+          "purchasePrice": {
+            "type": "number",
+            "format": "double"
+          },
+          "purchaseDate": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "status": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "site": {
+            "type": "integer",
+            "format": "int32"
+          }
+        },
+        "additionalProperties": false
+      },
+      "VendorDto": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "integer",
+            "format": "int32"
+          },
+          "name": {
+            "type": "string",
             "nullable": true
           }
         },
@@ -201,10 +459,19 @@
   },
   "tags": [
     {
-      "name": "Devices"
+      "name": "Customer"
     },
     {
       "name": "IotGrpcLearning"
+    },
+    {
+      "name": "Machines"
+    },
+    {
+      "name": "MachinesRegistry"
+    },
+    {
+      "name": "Vendor"
     }
   ]
 }

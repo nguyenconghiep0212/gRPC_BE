@@ -2,57 +2,26 @@
 using IotGrpcLearning.Models;
 using IotGrpcLearning.Services;
 using IotGrpcLearning.Proto;
+using IotGrpcLearning.Interfaces;
 
 namespace IotGrpcLearning.Controllers;
 
 [ApiController]
-[Route("api/devices")]
-public class DevicesController : ControllerBase
+[Route("api/devicesRegistry")]
+public class MachinesRegistryController : ControllerBase
 {
-	private readonly IDeviceRegistry _registry;
+	private readonly IMachineService _service;
+	private readonly IMachineRegistry _registry;
 	private readonly ICommandBus _bus;
 
-	public DevicesController(IDeviceRegistry registry, ICommandBus bus)
+	public MachinesRegistryController(IMachineService service, IMachineRegistry registry, ICommandBus bus)
 	{
+		_service = service;
 		_registry = registry;
 		_bus = bus;
-	}
+	} 
 
-	// GET /api/devices/list
-	[HttpGet("list")]
-	public ActionResult<IEnumerable<DeviceDto>> List()
-	{
-		var devices = _registry.GetAll()
-			.OrderBy(d => d.DeviceId)
-			.Select(d => new DeviceDto(
-				d.DeviceId,
-				d.Health,
-				d.Details,
-				d.Connected,
-				d.LastSeenUnixMs,
-				d.Tags));
-
-		return Ok(devices);
-	}
-
-	// GET /api/devices/{deviceId}/detail
-	[HttpGet("{deviceId}/detail")]
-	public ActionResult<DeviceDto> Detail(string deviceId)
-	{
-		var d = _registry.Get(deviceId);
-		if (d is null)
-			return NotFound(new { error = "device not found" });
-
-		return Ok(new DeviceDto(
-			d.DeviceId,
-			d.Health,
-			d.Details,
-			d.Connected,
-			d.LastSeenUnixMs,
-			d.Tags));
-	}
-
-	// POST /api/devices/{deviceId}/commands
+ 	// POST /api/devices/{deviceId}/commands
 	[HttpPost("{deviceId}/commands")]
 	public async Task<IActionResult> SendCommand(
 		string deviceId,
@@ -64,7 +33,7 @@ public class DevicesController : ControllerBase
 
 		// Optional: validate device exists in registry
 		// If you prefer allowing enqueue even when offline, remove this block.
-		var d = _registry.Get(deviceId);
+		var d = _service.GetAsync(deviceId);
 		if (d is null)
 			return NotFound(new { error = "device not found" });
 
@@ -91,5 +60,6 @@ public class DevicesController : ControllerBase
 			deviceId,
 			command = new { cmd.CommandId, cmd.Name, args = cmd.Args }
 		});
-	}
+	} 
+
 }

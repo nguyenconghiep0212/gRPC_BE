@@ -18,9 +18,127 @@
     ]
   },
   {
-    "ContainingType": "IotGrpcLearning.Controllers.DevicesController",
+    "ContainingType": "IotGrpcLearning.Controllers.CustomerController",
+    "Method": "Create",
+    "RelativePath": "api/customers/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "IotGrpcLearning.Models.CustomerDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "IotGrpcLearning.Models.CustomerDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "IotGrpcLearning.Controllers.CustomerController",
+    "Method": "List",
+    "RelativePath": "api/customers/list",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[IotGrpcLearning.Models.CustomerDto, IotGrpcLearning, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "IotGrpcLearning.Controllers.MachinesController",
+    "Method": "Detail",
+    "RelativePath": "api/devices/{deviceId}/detail",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "deviceId",
+        "Type": "System.String",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "IotGrpcLearning.Models.MachineDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "IotGrpcLearning.Controllers.MachinesController",
+    "Method": "Create",
+    "RelativePath": "api/devices/create",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "dto",
+        "Type": "IotGrpcLearning.Models.MachineDto",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "IotGrpcLearning.Models.MachineDto",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "IotGrpcLearning.Controllers.MachinesController",
+    "Method": "List",
+    "RelativePath": "api/devices/list",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[IotGrpcLearning.Models.MachineDto, IotGrpcLearning, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "IotGrpcLearning.Controllers.MachinesRegistryController",
     "Method": "SendCommand",
-    "RelativePath": "api/devices/{deviceId}/commands",
+    "RelativePath": "api/devicesRegistry/{deviceId}/commands",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
@@ -39,22 +157,22 @@
     "ReturnTypes": []
   },
   {
-    "ContainingType": "IotGrpcLearning.Controllers.DevicesController",
-    "Method": "Detail",
-    "RelativePath": "api/devices/{deviceId}/detail",
-    "HttpMethod": "GET",
+    "ContainingType": "IotGrpcLearning.Controllers.VendorController",
+    "Method": "Create",
+    "RelativePath": "api/vendors/create",
+    "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,
     "Parameters": [
       {
-        "Name": "deviceId",
-        "Type": "System.String",
+        "Name": "dto",
+        "Type": "IotGrpcLearning.Models.VendorDto",
         "IsRequired": true
       }
     ],
     "ReturnTypes": [
       {
-        "Type": "IotGrpcLearning.Models.DeviceDto",
+        "Type": "IotGrpcLearning.Models.VendorDto",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -65,16 +183,16 @@
     ]
   },
   {
-    "ContainingType": "IotGrpcLearning.Controllers.DevicesController",
+    "ContainingType": "IotGrpcLearning.Controllers.VendorController",
     "Method": "List",
-    "RelativePath": "api/devices/list",
+    "RelativePath": "api/vendors/list",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
     "Parameters": [],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[IotGrpcLearning.Models.DeviceDto, IotGrpcLearning, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[IotGrpcLearning.Models.VendorDto, IotGrpcLearning, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
