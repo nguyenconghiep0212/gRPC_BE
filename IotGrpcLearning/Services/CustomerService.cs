@@ -1,6 +1,7 @@
 ﻿using IotGrpcLearning.Infrastructure;
 using IotGrpcLearning.Interfaces;
 using IotGrpcLearning.Models;
+using Microsoft.Data.Sqlite;
 
 namespace IotGrpcLearning.Services
 {
@@ -31,12 +32,12 @@ namespace IotGrpcLearning.Services
 
 			return new CustomerDto(newId, dto.Name ?? string.Empty);
 		}
-		public async Task<IEnumerable<CustomerDto>> GetAllAsync(CancellationToken ct = default)
+		public async Task<IEnumerable<CustomerDto>> GetAllAsync(PaginationDto body, CancellationToken ct = default)
 		{
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
 			using var cmd = conn.CreateCommand();
-			cmd.CommandText = "SELECT id, name FROM Customers;";
+			cmd.CommandText = $"SELECT id, name FROM Customers LIMIT {body.limit} OFFSET {body.offset};";
 			var vendors = new List<CustomerDto>();
 			using var reader = await cmd.ExecuteReaderAsync(ct);
 			while (await reader.ReadAsync(ct))
@@ -48,10 +49,8 @@ namespace IotGrpcLearning.Services
 			return vendors;
 		}
 
-		public async Task<bool> UpdateAsync(string id, CustomerDto dto, CancellationToken ct = default)
-		{
-			if (!int.TryParse(id, out var parsedId))
-				return false;
+		public async Task<bool> UpdateAsync(int id, CustomerDto dto, CancellationToken ct = default)
+		{ 
 
 			if (dto == null) throw new ArgumentNullException(nameof(dto));
 
@@ -63,31 +62,49 @@ namespace IotGrpcLearning.Services
 				"UPDATE Customers SET name = @name WHERE id = @id;";
 
 			cmd.Parameters.AddWithValue("@name", dto.Name ?? string.Empty);  
-			cmd.Parameters.AddWithValue("@id", parsedId);
+			cmd.Parameters.AddWithValue("@id", id);
 
 			var rows = await cmd.ExecuteNonQueryAsync(ct);
 			return rows > 0;
 		}
 
-		public async Task<bool> DeleteAsync(string id, CancellationToken ct = default)
-		{
-			if (!int.TryParse(id, out var parsedId))
-				return false;
+		public async Task<bool> DeleteAsync(int id, CancellationToken ct = default)
+		{ 
 
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
 
 			using var cmd = conn.CreateCommand();
 			cmd.CommandText = "DELETE FROM Customers WHERE id = @id;";
-			cmd.Parameters.AddWithValue("@id", parsedId);
+			cmd.Parameters.AddWithValue("@id", id);
 
 			var rows = await cmd.ExecuteNonQueryAsync(ct);
 			return rows > 0;
 		}
 
-        public Task<CustomerDto?> GetAsync(string id, CancellationToken ct = default)
-        {
-            throw new NotImplementedException();
-        }
+        public async Task<CustomerDto?> GetAsync(int id, CancellationToken ct = default)
+        { 
+			using var conn = _dbFactory.CreateConnection();
+			await conn.OpenAsync(ct);
+
+			using var cmd = conn.CreateCommand();
+			cmd.CommandText = "SELECT id, name FROM Customers WHERE id = @id LIMIT 1;";
+			cmd.Parameters.AddWithValue("@id", id);
+
+			using var rdr = await cmd.ExecuteReaderAsync(ct);
+			if (await rdr.ReadAsync(ct))
+			{
+				static T GetSafe<T>(SqliteDataReader r, int i, Func<object, T> conv, T @default = default!)
+				{
+					if (r.IsDBNull(i)) return @default!;
+					return conv(r.GetValue(i));
+				}
+				int customer_id = GetSafe(rdr, 0, o => Convert.ToInt32(o));
+				string customer_name = GetSafe(rdr, 2, o => Convert.ToString(o) ?? string.Empty, string.Empty);
+				return new CustomerDto(customer_id, customer_name); ;
+			}
+
+			return null;
+		}
     }
 }

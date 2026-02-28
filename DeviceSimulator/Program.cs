@@ -35,7 +35,7 @@ Option<string> fwVersionOption = new("--fw-version", ["-fw"])
 	DefaultValueFactory = (parseResult) => Environment.GetEnvironmentVariable("FWVERSION") ?? "1.0.1"
 };
 
-var heartbeatStates = new ConcurrentDictionary<string, HeartbeatSession>();
+var heartbeatStates = new ConcurrentDictionary<int, HeartbeatSession>();
 
 var root = new RootCommand("Multi Device Simulator");
 root.Options.Add(serverOption);
@@ -46,7 +46,7 @@ root.Options.Add(fwVersionOption);
 
 root.SetAction(async (parseResult) =>
 {
-	string server = parseResult.GetValue(serverOption) ?? "https://localhost:7096";
+	string server = parseResult.GetValue(serverOption) ?? "https://localhost:5151";
 	int count = parseResult.GetValue(countOption);
 	string prefix = parseResult.GetValue(prefixOption) ?? "station";
 	int periodMs = parseResult.GetValue(periodMsOption);
@@ -63,7 +63,7 @@ root.SetAction(async (parseResult) =>
 
 	// Start N devices
 	var tasks = Enumerable.Range(1, count)
-		.Select(i => RunDeviceAsync(client, $"{prefix}-{i}", periodMs, fwversion, cts.Token))
+		.Select(i => RunDeviceAsync(client, i, periodMs, fwversion, cts.Token))
 		.ToArray();
 
 	await Task.WhenAll(tasks);
@@ -74,7 +74,7 @@ root.SetAction(async (parseResult) =>
 });
 
 // =========== per-device logic ===========
-async Task RunDeviceAsync(DeviceGateway.DeviceGatewayClient client, string deviceId, int periodMs, string fwVersion, CancellationToken ct)
+async Task RunDeviceAsync(DeviceGateway.DeviceGatewayClient client, int deviceId, int periodMs, string fwVersion, CancellationToken ct)
 {
 	// Arrange
 
@@ -85,7 +85,7 @@ async Task RunDeviceAsync(DeviceGateway.DeviceGatewayClient client, string devic
 	//
 }
 
-async Task InitAsync(string deviceId, string fwVersion, DeviceGateway.DeviceGatewayClient client)
+async Task InitAsync(int deviceId, string fwVersion, DeviceGateway.DeviceGatewayClient client)
 {
 	var reply = await client.InitAsync(new DeviceInitRequest
 	{
@@ -96,7 +96,7 @@ async Task InitAsync(string deviceId, string fwVersion, DeviceGateway.DeviceGate
 }
 
 // 2) SendTelemetry(client streaming)
-async Task Telemetry(string deviceId, DeviceGateway.DeviceGatewayClient client)
+async Task Telemetry(int deviceId, DeviceGateway.DeviceGatewayClient client)
 {
 
 	using var call = client.SendTelemetry();
@@ -122,7 +122,7 @@ async Task Telemetry(string deviceId, DeviceGateway.DeviceGatewayClient client)
 }
 
 // 3) Start server-streaming subscription
-async Task StartSubscribeCommands(string deviceId, DeviceGateway.DeviceGatewayClient client)
+async Task StartSubscribeCommands(int deviceId, DeviceGateway.DeviceGatewayClient client)
 {
 	using CancellationTokenSource cts = new CancellationTokenSource();
 
@@ -155,7 +155,7 @@ async Task StartSubscribeCommands(string deviceId, DeviceGateway.DeviceGatewayCl
 	}
 }
 
-async Task CommandRedirect(string deviceId, IotGrpcLearning.Proto.Command cmd, DeviceGateway.DeviceGatewayClient client)
+async Task CommandRedirect(int deviceId, IotGrpcLearning.Proto.Command cmd, DeviceGateway.DeviceGatewayClient client)
 {
 	var args = cmd.Args.Count == 0 ? "{}" : "{" + string.Join(", ", cmd.Args.Select(kv => $"{kv.Key}={kv.Value}")) + "}";
 	Console.WriteLine($"[Commands] Received: Device={deviceId} cmdName={cmd.Name} args={args}");
@@ -180,7 +180,7 @@ async Task CommandRedirect(string deviceId, IotGrpcLearning.Proto.Command cmd, D
 // 4) Bi-di Heartbeat
 #region [HEARTBEAT]
 
-async Task StartHeartbeatSessionAsync(string deviceId, DeviceGateway.DeviceGatewayClient client)
+async Task StartHeartbeatSessionAsync(int deviceId, DeviceGateway.DeviceGatewayClient client)
 {
     if (heartbeatStates.ContainsKey(deviceId))
     {
@@ -232,7 +232,7 @@ async Task StartHeartbeatSessionAsync(string deviceId, DeviceGateway.DeviceGatew
     });
 }
 
-async Task StartHeartBeat(string deviceId, AsyncDuplexStreamingCall<DeviceStatusRequest, DeviceStatusResponse> heartbeat, CancellationTokenSource cts)
+async Task StartHeartBeat(int deviceId, AsyncDuplexStreamingCall<DeviceStatusRequest, DeviceStatusResponse> heartbeat, CancellationTokenSource cts)
 {
 	CancellationToken ct = cts.Token;
 	int heartbeatInterval = 2; // seconds
@@ -264,7 +264,7 @@ async Task StartHeartBeat(string deviceId, AsyncDuplexStreamingCall<DeviceStatus
 		return r.Next(100);
 	}
 }
-async Task ReadHeartbeatAnalyzedStatus(string deviceId, AsyncDuplexStreamingCall<DeviceStatusRequest, DeviceStatusResponse> heartbeat, CancellationTokenSource cts)
+async Task ReadHeartbeatAnalyzedStatus(int deviceId, AsyncDuplexStreamingCall<DeviceStatusRequest, DeviceStatusResponse> heartbeat, CancellationTokenSource cts)
 {
 	// Read responses from server
 	CancellationToken ct = cts.Token;
@@ -295,7 +295,7 @@ async Task ReadHeartbeatAnalyzedStatus(string deviceId, AsyncDuplexStreamingCall
 		Console.WriteLine($"[Debug]|[Device:{deviceId}]: HB read RpcException: {rex.Status} - {rex.Message}");
 	}
 }
-async Task StopHeartbeatSessionAsync(string deviceId)
+async Task StopHeartbeatSessionAsync(int deviceId)
 {
 
 	if (!heartbeatStates.TryRemove(deviceId, out var session))

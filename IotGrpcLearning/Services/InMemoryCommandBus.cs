@@ -7,21 +7,21 @@ namespace IotGrpcLearning.Services;
 
 public interface ICommandBus
 {
-	ChannelReader<Command> Subscribe(string machineId);
-	ValueTask EnqueueCommandAsync(string machineId, Command command, CancellationToken ct = default);
+	ChannelReader<Command> Subscribe(int machineId);
+	ValueTask EnqueueCommandAsync(int machineId, Command command, CancellationToken ct = default);
 }
 
 public sealed class InMemoryCommandBus : ICommandBus
 {
-	private readonly ConcurrentDictionary<string, Channel<Command>> _channels = new();
+	private readonly ConcurrentDictionary<int, Channel<Command>> _channels = new();
 
-	public ChannelReader<Command> Subscribe(string machineId)
+	public ChannelReader<Command> Subscribe(int machineId)
 	{
 		Channel<Command> channel = _channels.GetOrAdd(machineId, _ => Channel.CreateUnbounded<Command>());
 		return channel.Reader;
 	}
 
-	public async ValueTask EnqueueCommandAsync(string machineId, Command command, CancellationToken ct = default)
+	public async ValueTask EnqueueCommandAsync(int machineId, Command command, CancellationToken ct = default)
 	{
 		// Get or create the channel for the machine
 		Channel<Command> channel = _channels.GetOrAdd(machineId, _ => Channel.CreateUnbounded<Command>());  
@@ -29,7 +29,7 @@ public sealed class InMemoryCommandBus : ICommandBus
 		await channel.Writer.WriteAsync(command, ct);
 	}
 
-	public ConcurrentDictionary<string, Channel<Command>> GetChannelsDictionary()
+	public ConcurrentDictionary<int, Channel<Command>> GetChannelsDictionary()
 	{
 		return _channels;
 	}

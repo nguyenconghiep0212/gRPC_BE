@@ -32,11 +32,7 @@ namespace IotGrpcLearning
 			// Validate and register Sqlite connection factory (extension handles validation and registration)
 			builder.AddValidatedSqlite();
 
-			builder.Services.AddSingleton<ICommandBus, InMemoryCommandBus>();
-			builder.Services.AddSingleton<IMachineRegistry, MachineRegistry>();
-			builder.Services.AddSingleton<IMachineService, MachineService>();
-			builder.Services.AddSingleton<IVendor, VendorService>();
-			builder.Services.AddSingleton<ICustomer, CustomerService>();
+			builder.AddSingleton();
 
 			var app = builder.Build();
 

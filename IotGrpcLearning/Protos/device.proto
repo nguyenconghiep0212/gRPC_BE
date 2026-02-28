@@ -19,8 +19,9 @@ service DeviceGateway {
 
 // A device greets the gateway once it connects
 message DeviceInitRequest {
-  string device_id = 1;   // e.g., "station 1"
-  string fw_version = 2;  // firmware version, e.g., "1.0.3"
+  int32 device_id = 1;   // e.g., "station 1"
+  string device_name = 2; // e.g., "temperature sensor"
+  string fw_version = 3;  // firmware version, e.g., "1.0.3"
 }
 
 message DeviceInitResponse {
@@ -31,7 +32,7 @@ message DeviceInitResponse {
 
 // Telemetry Data 
 message TelemetryRequest {
-  string device_id = 1;         // which device sent this
+  int32 device_id = 1;         // which device sent this
   double tempature = 2;             // numeric value
   int64 unix_ms = 3;            // event time (ms since epoch)
   map<string, string> tags = 4; // optional labels: zone=A1, unit=C
@@ -46,21 +47,23 @@ message TelemetryResponse {
 
 // Heartbeat status from device → server
 message DeviceStatusRequest {
-  string device_id = 1; 
-  double temperature = 2; 
-  int64  unix_ms   = 3; // ms since epoch (time when status was observed)
+  int32 device_id = 1; 
+  string device_name = 2;
+  double temperature = 3; 
+  int64  unix_ms   = 4; // ms since epoch (time when status was observed)
 }
 message DeviceStatusResponse { 
-  string device_id = 1; 
-  string health    = 2; // "OK" | "WARN" | "CRIT"
-  string details   = 3; // optional free text
-  int64  unix_ms   = 4; // ms since epoch (time when status was observed)
+  int32 device_id = 1; 
+  string device_name = 2;
+  string health    = 3; // "OK" | "WARN" | "CRIT"
+  string details   = 4; // optional free text
+  int64  unix_ms   = 5; // ms since epoch (time when status was observed)
  }
 
 
 // Command message and server-streaming RPC
 message DeviceId {
-  string id = 1;
+  int32 id = 1;
 }
 
 message Command {

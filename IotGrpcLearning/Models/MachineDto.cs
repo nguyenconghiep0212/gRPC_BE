@@ -2,11 +2,10 @@ namespace IotGrpcLearning.Models;
 
 public record MachineDto(
     int Id,
-    int MachineInfoId,
     string Name,
-    string Details,
+    string Alias,
+	string Details,
     int Vendor,
-    decimal PurchasePrice,
+    double PurchasePrice,
     DateTime PurchaseDate,
-    int Status,
     int Site);

@@ -22,12 +22,12 @@ namespace IotGrpcLearning.Services
 
 			using var cmd = conn.CreateCommand();
 			cmd.CommandText =
-				"INSERT INTO Machines (machine_info_id, name, details, vendor, purchase_price, purchase_date, status, site) " +
-				"VALUES (@mi, @name, @details, @vendor, @price, @pdate, @status, @site); " +
+				"INSERT INTO Machines (  name, alias, details, vendor, purchase_price, purchase_date, site) " +
+				"VALUES ( @name, @alias, @details, @vendor, @price, @pdate, @site); " +
 				"SELECT last_insert_rowid();";
 
-			cmd.Parameters.AddWithValue("@mi", dto.MachineInfoId);
 			cmd.Parameters.AddWithValue("@name", dto.Name ?? string.Empty);
+			cmd.Parameters.AddWithValue("@alias", dto.Alias ?? string.Empty);
 			cmd.Parameters.AddWithValue("@details", dto.Details ?? string.Empty);
 			cmd.Parameters.AddWithValue("@vendor", dto.Vendor);
 			cmd.Parameters.AddWithValue("@price", dto.PurchasePrice);
@@ -37,41 +37,39 @@ namespace IotGrpcLearning.Services
 			else
 				cmd.Parameters.AddWithValue("@pdate", dto.PurchaseDate.ToString("o"));
 
-			cmd.Parameters.AddWithValue("@status", dto.Status);
 			cmd.Parameters.AddWithValue("@site", dto.Site);
 
 			var result = await cmd.ExecuteScalarAsync(ct);
 			var newId = Convert.ToInt32(result);
 
-			return new MachineDto(newId, dto.MachineInfoId, dto.Name ?? string.Empty, dto.Details ?? string.Empty,
-				dto.Vendor, dto.PurchasePrice, dto.PurchaseDate, dto.Status, dto.Site);
+			return new MachineDto(newId, dto.Name ?? string.Empty, dto.Alias ?? string.Empty, dto.Details ?? string.Empty,
+				dto.Vendor, dto.PurchasePrice, dto.PurchaseDate,  dto.Site);
 
 		}
 
-		public async Task<bool> DeleteAsync(string id, CancellationToken ct = default)
+		public async Task<bool> DeleteAsync(int id, CancellationToken ct = default)
 		{
-			if (!int.TryParse(id, out var parsedId))
-				return false;
+			 
 
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
 
 			using var cmd = conn.CreateCommand();
 			cmd.CommandText = "DELETE FROM Machines WHERE id = @id;";
-			cmd.Parameters.AddWithValue("@id", parsedId);
+			cmd.Parameters.AddWithValue("@id", id);
 
 			var rows = await cmd.ExecuteNonQueryAsync(ct);
 			return rows > 0;
 		}
 
-		public async Task<IEnumerable<MachineDto>> GetAllAsync(CancellationToken ct = default)
+		public async Task<IEnumerable<MachineDto>> GetAllAsync(PaginationDto body, CancellationToken ct = default)
 		{
 			var list = new List<MachineDto>();
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
 
 			using var cmd = conn.CreateCommand();
-			cmd.CommandText = "SELECT id, machine_info_id, name, details, vendor, purchase_price, purchase_date, status, site FROM Machines ORDER BY id;";
+			cmd.CommandText = $"SELECT id, name, alias, details, vendor, purchase_price, purchase_date, site FROM Machines ORDER BY id LIMIT {body.limit} OFFSET {body.offset};";
 			using var rdr = await cmd.ExecuteReaderAsync(ct);
 
 			while (await rdr.ReadAsync(ct))
@@ -82,17 +80,15 @@ namespace IotGrpcLearning.Services
 			return list;
 		}
 
-		public async Task<MachineDto?> GetAsync(string id, CancellationToken ct = default)
+		public async Task<MachineDto?> GetAsync(int id, CancellationToken ct = default)
 		{
-			if (!int.TryParse(id, out var parsedId))
-				return null;
-
+		 
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
 
 			using var cmd = conn.CreateCommand();
-			cmd.CommandText = "SELECT id, machine_info_id, name, details, vendor, purchase_price, purchase_date, status, site FROM Machines WHERE id = @id LIMIT 1;";
-			cmd.Parameters.AddWithValue("@id", parsedId);
+			cmd.CommandText = "SELECT id, name, alias, details, vendor, purchase_price, purchase_date, site FROM Machines WHERE id = @id LIMIT 1;";
+			cmd.Parameters.AddWithValue("@id", id);
 
 			using var rdr = await cmd.ExecuteReaderAsync(ct);
 			if (await rdr.ReadAsync(ct))
@@ -103,10 +99,8 @@ namespace IotGrpcLearning.Services
 			return null;
 		}
 
-		public async Task<bool> UpdateAsync(string id, MachineDto dto, CancellationToken ct = default)
-		{
-			if (!int.TryParse(id, out var parsedId))
-				return false;
+		public async Task<bool> UpdateAsync(int id, MachineDto dto, CancellationToken ct = default)
+		{ 
 
 			if (dto == null) throw new ArgumentNullException(nameof(dto));
 
@@ -115,11 +109,11 @@ namespace IotGrpcLearning.Services
 
 			using var cmd = conn.CreateCommand();
 			cmd.CommandText =
-				"UPDATE Machines SET machine_info_id = @mi, name = @name, details = @details, vendor = @vendor, " +
-				"purchase_price = @price, purchase_date = @pdate, status = @status, site = @site WHERE id = @id;";
+				"UPDATE Machines SET name = @name, alias = @alias, details = @details, vendor = @vendor, " +
+				"purchase_price = @price, purchase_date = @pdate, site = @site WHERE id = @id;";
 
-			cmd.Parameters.AddWithValue("@mi", dto.MachineInfoId);
 			cmd.Parameters.AddWithValue("@name", dto.Name ?? string.Empty);
+			cmd.Parameters.AddWithValue("@alias", dto.Alias ?? string.Empty);
 			cmd.Parameters.AddWithValue("@details", dto.Details ?? string.Empty);
 			cmd.Parameters.AddWithValue("@vendor", dto.Vendor);
 			cmd.Parameters.AddWithValue("@price", dto.PurchasePrice);
@@ -129,9 +123,8 @@ namespace IotGrpcLearning.Services
 			else
 				cmd.Parameters.AddWithValue("@pdate", dto.PurchaseDate.ToString("o"));
 
-			cmd.Parameters.AddWithValue("@status", dto.Status);
 			cmd.Parameters.AddWithValue("@site", dto.Site);
-			cmd.Parameters.AddWithValue("@id", parsedId);
+			cmd.Parameters.AddWithValue("@id", id);
 
 			var rows = await cmd.ExecuteNonQueryAsync(ct);
 			return rows > 0;
@@ -147,11 +140,11 @@ namespace IotGrpcLearning.Services
 			}
 
 			int id = GetSafe(rdr, 0, o => Convert.ToInt32(o));
-			int mi = GetSafe(rdr, 1, o => Convert.ToInt32(o), 0);
-			string name = GetSafe(rdr, 2, o => Convert.ToString(o) ?? string.Empty, string.Empty);
+			string name = GetSafe(rdr, 1, o => Convert.ToString(o) ?? string.Empty, string.Empty);
+			string alias = GetSafe(rdr, 2, o => Convert.ToString(o) ?? string.Empty, string.Empty);
 			string details = GetSafe(rdr, 3, o => Convert.ToString(o) ?? string.Empty, string.Empty);
 			int vendor = GetSafe(rdr, 4, o => Convert.ToInt32(o), 0);
-			decimal price = GetSafe(rdr, 5, o => Convert.ToDecimal(o), 0m);
+			double price = GetSafe(rdr, 5, o => Convert.ToDouble(o), 0.0);
 
 			// purchase_date might be stored as TEXT or numeric; attempt to parse
 			DateTime purchaseDate;
@@ -167,10 +160,9 @@ namespace IotGrpcLearning.Services
 				purchaseDate = DateTime.MinValue;
 			}
 
-			int status = GetSafe(rdr, 7, o => Convert.ToInt32(o), 0);
-			int site = GetSafe(rdr, 8, o => Convert.ToInt32(o), 0);
+			int site = GetSafe(rdr, 7, o => Convert.ToInt32(o), 0);
 
-			return new MachineDto(id, mi, name, details, vendor, price, purchaseDate, status, site);
+			return new MachineDto(id, name, alias, details, vendor, price, purchaseDate, site);
 		}
 		#endregion
 	}

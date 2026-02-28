@@ -8,11 +8,9 @@ namespace IotGrpcLearning.Interfaces
 {
 	public interface IMachineRegistry
 	{
-		void InitMachine(string deviceId);
-		void MarkConnected(string deviceId);
-		void MarkDisconnected(string deviceId);
-		void UpdateStatus(DeviceStatusResponse status);
-		IReadOnlyCollection<MachineSnapshot> GetAll();
-		MachineSnapshot? Get(string deviceId);
+		void InitMachine(int deviceId);
+		void MarkConnected(int deviceId);
+		void MarkDisconnected(int deviceId);
+		void UpdateStatus(DeviceStatusResponse status); 
  	}  
 }

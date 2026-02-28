@@ -22,10 +22,10 @@ public class MachineGatewayService : DeviceGateway.DeviceGatewayBase
 	public override Task<DeviceInitResponse> Init(DeviceInitRequest request, ServerCallContext context)
 	{
 		// Basic guardrails (simple and readable)
-		var deviceId = (request.DeviceId ?? string.Empty).Trim();
+		int deviceId = request.DeviceId;
 		var fw = (request.FwVersion ?? string.Empty).Trim();
 
-		if (string.IsNullOrWhiteSpace(deviceId))
+		if (deviceId < 1)
 		{
 			throw new RpcException(new Status(StatusCode.InvalidArgument, "device_id is required"));
 		}
@@ -37,8 +37,7 @@ public class MachineGatewayService : DeviceGateway.DeviceGatewayBase
 			Message = $"Welcome {deviceId}! Gateway online.",
 			ServerUnixMs = DateTimeOffset.UtcNow.ToUnixTimeMilliseconds()
 		};
-		_registry.InitMachine(deviceId);
-	
+		//_registry.InitMachine(deviceId);
 
         return Task.FromResult(reply);
 	}
@@ -48,21 +47,19 @@ public class MachineGatewayService : DeviceGateway.DeviceGatewayBase
 			IAsyncStreamReader<TelemetryRequest> requestStream,
 			ServerCallContext context)
 	{
-		int accepted = 0, rejected = 0;
-		string? deviceIdInferred = null;
+		int accepted = 0, rejected = 0; 
 
 		await foreach (var point in requestStream.ReadAllAsync(context.CancellationToken))
 		{
 			// simple validation
-			if (string.IsNullOrWhiteSpace(point.DeviceId) ||
+			if (point.DeviceId < 1 ||
 				double.IsNaN(point.Tempature) || double.IsInfinity(point.Tempature))
 			{
 				rejected++;
 				_logger.LogWarning("Rejected telemetry: device={DeviceId} | tempature={Value}",
 					point.DeviceId, point.Tempature);
 				continue;
-			}
-			deviceIdInferred ??= point.DeviceId;
+			} 
 
 			// For now, just log; persistence comes later.
 			_logger.LogInformation("Telemetry: device={DeviceId} | tempature={Value} | at={Ts}",
@@ -80,8 +77,8 @@ public class MachineGatewayService : DeviceGateway.DeviceGatewayBase
 		   IServerStreamWriter<Command> responseStream,
 		   ServerCallContext context)
 	{
-		var deviceId = (DeviceId?.Id ?? string.Empty).Trim();
-		if (string.IsNullOrWhiteSpace(deviceId))
+		int deviceId = DeviceId.Id;
+		if (deviceId < 1)
 			throw new RpcException(new Status(StatusCode.InvalidArgument, "device id is required"));
 
 		_logger.LogInformation("Device subscribed for commands: {DeviceId}", deviceId);
@@ -101,7 +98,7 @@ public class MachineGatewayService : DeviceGateway.DeviceGatewayBase
 	}
 
 	public async Task QueueCommand(
-		   string deviceId,
+		   int deviceId,
 		   Command newCmd,
 		   IServerStreamWriter<Command> responseStream,
 		   ServerCallContext context
@@ -140,7 +137,8 @@ public class MachineGatewayService : DeviceGateway.DeviceGatewayBase
 		var ct = context.CancellationToken;
 
 		// We’ll infer deviceId from the first status
-		string? deviceId = null;
+		int deviceId = 0;
+		string deviceName = "unknown";
 		try
 		{
 			while (!ct.IsCancellationRequested)
@@ -151,9 +149,9 @@ public class MachineGatewayService : DeviceGateway.DeviceGatewayBase
 					break;
 				}
 				var status = requestStream.Current;
-				deviceId ??= (status.DeviceId ?? string.Empty).Trim();
-
-				if (string.IsNullOrWhiteSpace(deviceId))
+				deviceId = status.DeviceId; 
+				deviceName = status.DeviceName ?? $"device-{deviceId}";
+				if (deviceId < 1)
 				{
 					throw new RpcException(new Status(StatusCode.InvalidArgument, "device_id is required in Heartbeat"));
 				}
@@ -192,15 +190,15 @@ public class MachineGatewayService : DeviceGateway.DeviceGatewayBase
 		}
 		catch (IOException ioEx)
 		{
-			_logger.LogInformation($"[Device:{deviceId ?? "unknown"}]: Heartbeat client disconnected/reset - {ioEx.Message}");
+			_logger.LogInformation($"[Device:{deviceName ?? "unknown"}]: Heartbeat client disconnected/reset - {ioEx.Message}");
 		}
 		catch (Exception ex)
 		{
-			_logger.LogInformation($"[Device:{deviceId ?? "unknown"}]: Heartbeat stream cancelled - {ex.Message}");
+			_logger.LogInformation($"[Device:{deviceName ?? "unknown"}]: Heartbeat stream cancelled - {ex.Message}");
 		}
 		finally
 		{
-			if (!string.IsNullOrWhiteSpace(deviceId))
+			if (deviceId > 0)
 				_registry.MarkDisconnected(deviceId);
 		}
 
@@ -211,13 +209,13 @@ public class MachineGatewayService : DeviceGateway.DeviceGatewayBase
 			return "CRIT";
 		}
 
-		void UpdateDeviceStatus(string deviceId, DeviceStatusResponse status)
+		void UpdateDeviceStatus(int deviceId, DeviceStatusResponse status)
 		{
-			if (string.IsNullOrWhiteSpace(deviceId))
+			if (deviceId < 1)
 				throw new RpcException(new Status(StatusCode.InvalidArgument, "device_id is required in Heartbeat"));
 
 			_registry.MarkConnected(deviceId);
 			_registry.UpdateStatus(status);
-		}
+		} 
 	}
 }

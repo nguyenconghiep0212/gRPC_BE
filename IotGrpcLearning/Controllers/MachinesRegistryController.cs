@@ -24,7 +24,7 @@ public class MachinesRegistryController : ControllerBase
  	// POST /api/devices/{deviceId}/commands
 	[HttpPost("{deviceId}/commands")]
 	public async Task<IActionResult> SendCommand(
-		string deviceId,
+		int deviceId,
 		[FromBody] CommandRequestDto request,
 		CancellationToken ct)
 	{

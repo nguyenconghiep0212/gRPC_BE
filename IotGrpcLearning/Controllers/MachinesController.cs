@@ -17,60 +17,57 @@ public class MachinesController : ControllerBase
 		_service = service;
 	}
 
-	// GET /api/devices/list
-	[HttpGet("list")]
-	public async Task<ActionResult<IEnumerable<MachineDto>>> List()
+	// POST /api/machine/list
+	[HttpPost("list")]
+	public async Task<ActionResult<IEnumerable<MachineDto>>> List(PaginationDto body)
 	{
-		var devices = await _service.GetAllAsync();
+		var devices = await _service.GetAllAsync(body);
 		var result = devices.Select(d => new MachineDto(
 			d.Id,
-			d.MachineInfoId,
 			d.Name,
+			d.Alias,
 			d.Details,
 			d.Vendor,
 			d.PurchasePrice,
 			d.PurchaseDate,
-			d.Status,
 			d.Site));
 
 		return Ok(devices);
 	}
 
-	// GET /api/devices/{deviceId}/detail
-	[HttpGet("{deviceId}/detail")]
-	public async Task<ActionResult<MachineDto>> Detail(string deviceId)
+	// GET /api/machine/{machineId}/detail
+	[HttpGet("{machineId}/detail")]
+	public async Task<ActionResult<MachineDto>> Detail(int machineId)
 	{
-		var d = await _service.GetAsync(deviceId);
+		var d = await _service.GetAsync(machineId);
 		if (d is null)
-			return NotFound(new { error = "device not found" });
+			return NotFound(new { error = "machine not found" });
 
 		return Ok(new MachineDto(d.Id,
-			d.MachineInfoId,
-			d.Name,
+ 			d.Name,
+			d.Alias,
 			d.Details,
 			d.Vendor,
 			d.PurchasePrice,
 			d.PurchaseDate,
-			d.Status,
-			d.Site));
+ 			d.Site));
 	}
 
-	// POST /api/devices/create
+	// POST /api/machine/create
 	[HttpPost("create")]
 	public async Task<MachineDto> Create(MachineDto dto)
 	{
 		var d = new MachineDto(
 			dto.Id,
-			dto.MachineInfoId,
 			dto.Name,
+			dto.Alias,
 			dto.Details,
 			dto.Vendor,
 			dto.PurchasePrice,
 			dto.PurchaseDate,
-			dto.Status,
 			dto.Site);
 		var created = await _service.CreateAsync(d);
-		return new MachineDto(created.Id, created.MachineInfoId, created.Name, created.Details, created.Vendor, created.PurchasePrice, created.PurchaseDate, created.Status, created.Site);
+		return new MachineDto(created.Id, created.Name, created.Alias, created.Details, created.Vendor, created.PurchasePrice, created.PurchaseDate, created.Site);
 	}
 
 }

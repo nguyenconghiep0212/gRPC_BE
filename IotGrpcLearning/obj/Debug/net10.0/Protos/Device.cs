@@ -24,40 +24,41 @@ namespace IotGrpcLearning.Proto {
     static DeviceReflection() {
       byte[] descriptorData = global::System.Convert.FromBase64String(
           string.Concat(
-            "ChNQcm90b3MvZGV2aWNlLnByb3RvEgppb3QuZGV2aWNlIjoKEURldmljZUlu",
-            "aXRSZXF1ZXN0EhEKCWRldmljZV9pZBgBIAEoCRISCgpmd192ZXJzaW9uGAIg",
-            "ASgJIj0KEkRldmljZUluaXRSZXNwb25zZRIPCgdtZXNzYWdlGAEgASgJEhYK",
-            "DnNlcnZlcl91bml4X21zGAIgASgDIqwBChBUZWxlbWV0cnlSZXF1ZXN0EhEK",
-            "CWRldmljZV9pZBgBIAEoCRIRCgl0ZW1wYXR1cmUYAiABKAESDwoHdW5peF9t",
-            "cxgDIAEoAxI0CgR0YWdzGAQgAygLMiYuaW90LmRldmljZS5UZWxlbWV0cnlS",
-            "ZXF1ZXN0LlRhZ3NFbnRyeRorCglUYWdzRW50cnkSCwoDa2V5GAEgASgJEg0K",
-            "BXZhbHVlGAIgASgJOgI4ASJFChFUZWxlbWV0cnlSZXNwb25zZRIQCghhY2Nl",
-            "cHRlZBgBIAEoBRIQCghyZWplY3RlZBgCIAEoBRIMCgRub3RlGAMgASgJIk4K",
-            "E0RldmljZVN0YXR1c1JlcXVlc3QSEQoJZGV2aWNlX2lkGAEgASgJEhMKC3Rl",
-            "bXBlcmF0dXJlGAIgASgBEg8KB3VuaXhfbXMYAyABKAMiWwoURGV2aWNlU3Rh",
-            "dHVzUmVzcG9uc2USEQoJZGV2aWNlX2lkGAEgASgJEg4KBmhlYWx0aBgCIAEo",
-            "CRIPCgdkZXRhaWxzGAMgASgJEg8KB3VuaXhfbXMYBCABKAMiFgoIRGV2aWNl",
-            "SWQSCgoCaWQYASABKAkihQEKB0NvbW1hbmQSEgoKY29tbWFuZF9pZBgBIAEo",
-            "CRIMCgRuYW1lGAIgASgJEisKBGFyZ3MYAyADKAsyHS5pb3QuZGV2aWNlLkNv",
-            "bW1hbmQuQXJnc0VudHJ5GisKCUFyZ3NFbnRyeRILCgNrZXkYASABKAkSDQoF",
-            "dmFsdWUYAiABKAk6AjgBMrwCCg1EZXZpY2VHYXRld2F5EkUKBEluaXQSHS5p",
-            "b3QuZGV2aWNlLkRldmljZUluaXRSZXF1ZXN0Gh4uaW90LmRldmljZS5EZXZp",
-            "Y2VJbml0UmVzcG9uc2USTgoNU2VuZFRlbGVtZXRyeRIcLmlvdC5kZXZpY2Uu",
-            "VGVsZW1ldHJ5UmVxdWVzdBodLmlvdC5kZXZpY2UuVGVsZW1ldHJ5UmVzcG9u",
-            "c2UoARJAChFTdWJzY3JpYmVDb21tYW5kcxIULmlvdC5kZXZpY2UuRGV2aWNl",
-            "SWQaEy5pb3QuZGV2aWNlLkNvbW1hbmQwARJSCglIZWFydGJlYXQSHy5pb3Qu",
-            "ZGV2aWNlLkRldmljZVN0YXR1c1JlcXVlc3QaIC5pb3QuZGV2aWNlLkRldmlj",
-            "ZVN0YXR1c1Jlc3BvbnNlKAEwAUIYqgIVSW90R3JwY0xlYXJuaW5nLlByb3Rv",
-            "YgZwcm90bzM="));
+            "ChNQcm90b3MvZGV2aWNlLnByb3RvEgppb3QuZGV2aWNlIk8KEURldmljZUlu",
+            "aXRSZXF1ZXN0EhEKCWRldmljZV9pZBgBIAEoBRITCgtkZXZpY2VfbmFtZRgC",
+            "IAEoCRISCgpmd192ZXJzaW9uGAMgASgJIj0KEkRldmljZUluaXRSZXNwb25z",
+            "ZRIPCgdtZXNzYWdlGAEgASgJEhYKDnNlcnZlcl91bml4X21zGAIgASgDIqwB",
+            "ChBUZWxlbWV0cnlSZXF1ZXN0EhEKCWRldmljZV9pZBgBIAEoBRIRCgl0ZW1w",
+            "YXR1cmUYAiABKAESDwoHdW5peF9tcxgDIAEoAxI0CgR0YWdzGAQgAygLMiYu",
+            "aW90LmRldmljZS5UZWxlbWV0cnlSZXF1ZXN0LlRhZ3NFbnRyeRorCglUYWdz",
+            "RW50cnkSCwoDa2V5GAEgASgJEg0KBXZhbHVlGAIgASgJOgI4ASJFChFUZWxl",
+            "bWV0cnlSZXNwb25zZRIQCghhY2NlcHRlZBgBIAEoBRIQCghyZWplY3RlZBgC",
+            "IAEoBRIMCgRub3RlGAMgASgJImMKE0RldmljZVN0YXR1c1JlcXVlc3QSEQoJ",
+            "ZGV2aWNlX2lkGAEgASgFEhMKC2RldmljZV9uYW1lGAIgASgJEhMKC3RlbXBl",
+            "cmF0dXJlGAMgASgBEg8KB3VuaXhfbXMYBCABKAMicAoURGV2aWNlU3RhdHVz",
+            "UmVzcG9uc2USEQoJZGV2aWNlX2lkGAEgASgFEhMKC2RldmljZV9uYW1lGAIg",
+            "ASgJEg4KBmhlYWx0aBgDIAEoCRIPCgdkZXRhaWxzGAQgASgJEg8KB3VuaXhf",
+            "bXMYBSABKAMiFgoIRGV2aWNlSWQSCgoCaWQYASABKAUihQEKB0NvbW1hbmQS",
+            "EgoKY29tbWFuZF9pZBgBIAEoCRIMCgRuYW1lGAIgASgJEisKBGFyZ3MYAyAD",
+            "KAsyHS5pb3QuZGV2aWNlLkNvbW1hbmQuQXJnc0VudHJ5GisKCUFyZ3NFbnRy",
+            "eRILCgNrZXkYASABKAkSDQoFdmFsdWUYAiABKAk6AjgBMrwCCg1EZXZpY2VH",
+            "YXRld2F5EkUKBEluaXQSHS5pb3QuZGV2aWNlLkRldmljZUluaXRSZXF1ZXN0",
+            "Gh4uaW90LmRldmljZS5EZXZpY2VJbml0UmVzcG9uc2USTgoNU2VuZFRlbGVt",
+            "ZXRyeRIcLmlvdC5kZXZpY2UuVGVsZW1ldHJ5UmVxdWVzdBodLmlvdC5kZXZp",
+            "Y2UuVGVsZW1ldHJ5UmVzcG9uc2UoARJAChFTdWJzY3JpYmVDb21tYW5kcxIU",
+            "LmlvdC5kZXZpY2UuRGV2aWNlSWQaEy5pb3QuZGV2aWNlLkNvbW1hbmQwARJS",
+            "CglIZWFydGJlYXQSHy5pb3QuZGV2aWNlLkRldmljZVN0YXR1c1JlcXVlc3Qa",
+            "IC5pb3QuZGV2aWNlLkRldmljZVN0YXR1c1Jlc3BvbnNlKAEwAUIYqgIVSW90",
+            "R3JwY0xlYXJuaW5nLlByb3RvYgZwcm90bzM="));
       descriptor = pbr::FileDescriptor.FromGeneratedCode(descriptorData,
           new pbr::FileDescriptor[] { },
           new pbr::GeneratedClrTypeInfo(null, null, new pbr::GeneratedClrTypeInfo[] {
-            new pbr::GeneratedClrTypeInfo(typeof(global::IotGrpcLearning.Proto.DeviceInitRequest), global::IotGrpcLearning.Proto.DeviceInitRequest.Parser, new[]{ "DeviceId", "FwVersion" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::IotGrpcLearning.Proto.DeviceInitRequest), global::IotGrpcLearning.Proto.DeviceInitRequest.Parser, new[]{ "DeviceId", "DeviceName", "FwVersion" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::IotGrpcLearning.Proto.DeviceInitResponse), global::IotGrpcLearning.Proto.DeviceInitResponse.Parser, new[]{ "Message", "ServerUnixMs" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::IotGrpcLearning.Proto.TelemetryRequest), global::IotGrpcLearning.Proto.TelemetryRequest.Parser, new[]{ "DeviceId", "Tempature", "UnixMs", "Tags" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, }),
             new pbr::GeneratedClrTypeInfo(typeof(global::IotGrpcLearning.Proto.TelemetryResponse), global::IotGrpcLearning.Proto.TelemetryResponse.Parser, new[]{ "Accepted", "Rejected", "Note" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::IotGrpcLearning.Proto.DeviceStatusRequest), global::IotGrpcLearning.Proto.DeviceStatusRequest.Parser, new[]{ "DeviceId", "Temperature", "UnixMs" }, null, null, null, null),
-            new pbr::GeneratedClrTypeInfo(typeof(global::IotGrpcLearning.Proto.DeviceStatusResponse), global::IotGrpcLearning.Proto.DeviceStatusResponse.Parser, new[]{ "DeviceId", "Health", "Details", "UnixMs" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::IotGrpcLearning.Proto.DeviceStatusRequest), global::IotGrpcLearning.Proto.DeviceStatusRequest.Parser, new[]{ "DeviceId", "DeviceName", "Temperature", "UnixMs" }, null, null, null, null),
+            new pbr::GeneratedClrTypeInfo(typeof(global::IotGrpcLearning.Proto.DeviceStatusResponse), global::IotGrpcLearning.Proto.DeviceStatusResponse.Parser, new[]{ "DeviceId", "DeviceName", "Health", "Details", "UnixMs" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::IotGrpcLearning.Proto.DeviceId), global::IotGrpcLearning.Proto.DeviceId.Parser, new[]{ "Id" }, null, null, null, null),
             new pbr::GeneratedClrTypeInfo(typeof(global::IotGrpcLearning.Proto.Command), global::IotGrpcLearning.Proto.Command.Parser, new[]{ "CommandId", "Name", "Args" }, null, null, null, new pbr::GeneratedClrTypeInfo[] { null, })
           }));
@@ -105,6 +106,7 @@ namespace IotGrpcLearning.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DeviceInitRequest(DeviceInitRequest other) : this() {
       deviceId_ = other.deviceId_;
+      deviceName_ = other.deviceName_;
       fwVersion_ = other.fwVersion_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
     }
@@ -117,21 +119,36 @@ namespace IotGrpcLearning.Proto {
 
     /// <summary>Field number for the "device_id" field.</summary>
     public const int DeviceIdFieldNumber = 1;
-    private string deviceId_ = "";
+    private int deviceId_;
     /// <summary>
     /// e.g., "station 1"
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string DeviceId {
+    public int DeviceId {
       get { return deviceId_; }
       set {
-        deviceId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        deviceId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "device_name" field.</summary>
+    public const int DeviceNameFieldNumber = 2;
+    private string deviceName_ = "";
+    /// <summary>
+    /// e.g., "temperature sensor"
+    /// </summary>
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string DeviceName {
+      get { return deviceName_; }
+      set {
+        deviceName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
     /// <summary>Field number for the "fw_version" field.</summary>
-    public const int FwVersionFieldNumber = 2;
+    public const int FwVersionFieldNumber = 3;
     private string fwVersion_ = "";
     /// <summary>
     /// firmware version, e.g., "1.0.3"
@@ -161,6 +178,7 @@ namespace IotGrpcLearning.Proto {
         return true;
       }
       if (DeviceId != other.DeviceId) return false;
+      if (DeviceName != other.DeviceName) return false;
       if (FwVersion != other.FwVersion) return false;
       return Equals(_unknownFields, other._unknownFields);
     }
@@ -169,7 +187,8 @@ namespace IotGrpcLearning.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (DeviceId.Length != 0) hash ^= DeviceId.GetHashCode();
+      if (DeviceId != 0) hash ^= DeviceId.GetHashCode();
+      if (DeviceName.Length != 0) hash ^= DeviceName.GetHashCode();
       if (FwVersion.Length != 0) hash ^= FwVersion.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
@@ -189,12 +208,16 @@ namespace IotGrpcLearning.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (DeviceId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(DeviceId);
+      if (DeviceId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(DeviceId);
+      }
+      if (DeviceName.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(DeviceName);
       }
       if (FwVersion.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(FwVersion);
       }
       if (_unknownFields != null) {
@@ -207,12 +230,16 @@ namespace IotGrpcLearning.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (DeviceId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(DeviceId);
+      if (DeviceId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(DeviceId);
+      }
+      if (DeviceName.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(DeviceName);
       }
       if (FwVersion.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(FwVersion);
       }
       if (_unknownFields != null) {
@@ -225,8 +252,11 @@ namespace IotGrpcLearning.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (DeviceId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(DeviceId);
+      if (DeviceId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(DeviceId);
+      }
+      if (DeviceName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(DeviceName);
       }
       if (FwVersion.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(FwVersion);
@@ -243,8 +273,11 @@ namespace IotGrpcLearning.Proto {
       if (other == null) {
         return;
       }
-      if (other.DeviceId.Length != 0) {
+      if (other.DeviceId != 0) {
         DeviceId = other.DeviceId;
+      }
+      if (other.DeviceName.Length != 0) {
+        DeviceName = other.DeviceName;
       }
       if (other.FwVersion.Length != 0) {
         FwVersion = other.FwVersion;
@@ -264,11 +297,15 @@ namespace IotGrpcLearning.Proto {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
-            DeviceId = input.ReadString();
+          case 8: {
+            DeviceId = input.ReadInt32();
             break;
           }
           case 18: {
+            DeviceName = input.ReadString();
+            break;
+          }
+          case 26: {
             FwVersion = input.ReadString();
             break;
           }
@@ -287,11 +324,15 @@ namespace IotGrpcLearning.Proto {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            DeviceId = input.ReadString();
+          case 8: {
+            DeviceId = input.ReadInt32();
             break;
           }
           case 18: {
+            DeviceName = input.ReadString();
+            break;
+          }
+          case 26: {
             FwVersion = input.ReadString();
             break;
           }
@@ -588,16 +629,16 @@ namespace IotGrpcLearning.Proto {
 
     /// <summary>Field number for the "device_id" field.</summary>
     public const int DeviceIdFieldNumber = 1;
-    private string deviceId_ = "";
+    private int deviceId_;
     /// <summary>
     /// which device sent this
     /// </summary>
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string DeviceId {
+    public int DeviceId {
       get { return deviceId_; }
       set {
-        deviceId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        deviceId_ = value;
       }
     }
 
@@ -671,7 +712,7 @@ namespace IotGrpcLearning.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (DeviceId.Length != 0) hash ^= DeviceId.GetHashCode();
+      if (DeviceId != 0) hash ^= DeviceId.GetHashCode();
       if (Tempature != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Tempature);
       if (UnixMs != 0L) hash ^= UnixMs.GetHashCode();
       hash ^= Tags.GetHashCode();
@@ -693,9 +734,9 @@ namespace IotGrpcLearning.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (DeviceId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(DeviceId);
+      if (DeviceId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(DeviceId);
       }
       if (Tempature != 0D) {
         output.WriteRawTag(17);
@@ -716,9 +757,9 @@ namespace IotGrpcLearning.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (DeviceId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(DeviceId);
+      if (DeviceId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(DeviceId);
       }
       if (Tempature != 0D) {
         output.WriteRawTag(17);
@@ -739,8 +780,8 @@ namespace IotGrpcLearning.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (DeviceId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(DeviceId);
+      if (DeviceId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(DeviceId);
       }
       if (Tempature != 0D) {
         size += 1 + 8;
@@ -761,7 +802,7 @@ namespace IotGrpcLearning.Proto {
       if (other == null) {
         return;
       }
-      if (other.DeviceId.Length != 0) {
+      if (other.DeviceId != 0) {
         DeviceId = other.DeviceId;
       }
       if (other.Tempature != 0D) {
@@ -786,8 +827,8 @@ namespace IotGrpcLearning.Proto {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
-            DeviceId = input.ReadString();
+          case 8: {
+            DeviceId = input.ReadInt32();
             break;
           }
           case 17: {
@@ -817,8 +858,8 @@ namespace IotGrpcLearning.Proto {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            DeviceId = input.ReadString();
+          case 8: {
+            DeviceId = input.ReadInt32();
             break;
           }
           case 17: {
@@ -1146,6 +1187,7 @@ namespace IotGrpcLearning.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DeviceStatusRequest(DeviceStatusRequest other) : this() {
       deviceId_ = other.deviceId_;
+      deviceName_ = other.deviceName_;
       temperature_ = other.temperature_;
       unixMs_ = other.unixMs_;
       _unknownFields = pb::UnknownFieldSet.Clone(other._unknownFields);
@@ -1159,18 +1201,30 @@ namespace IotGrpcLearning.Proto {
 
     /// <summary>Field number for the "device_id" field.</summary>
     public const int DeviceIdFieldNumber = 1;
-    private string deviceId_ = "";
+    private int deviceId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string DeviceId {
+    public int DeviceId {
       get { return deviceId_; }
       set {
-        deviceId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        deviceId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "device_name" field.</summary>
+    public const int DeviceNameFieldNumber = 2;
+    private string deviceName_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string DeviceName {
+      get { return deviceName_; }
+      set {
+        deviceName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
     /// <summary>Field number for the "temperature" field.</summary>
-    public const int TemperatureFieldNumber = 2;
+    public const int TemperatureFieldNumber = 3;
     private double temperature_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
@@ -1182,7 +1236,7 @@ namespace IotGrpcLearning.Proto {
     }
 
     /// <summary>Field number for the "unix_ms" field.</summary>
-    public const int UnixMsFieldNumber = 3;
+    public const int UnixMsFieldNumber = 4;
     private long unixMs_;
     /// <summary>
     /// ms since epoch (time when status was observed)
@@ -1212,6 +1266,7 @@ namespace IotGrpcLearning.Proto {
         return true;
       }
       if (DeviceId != other.DeviceId) return false;
+      if (DeviceName != other.DeviceName) return false;
       if (!pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.Equals(Temperature, other.Temperature)) return false;
       if (UnixMs != other.UnixMs) return false;
       return Equals(_unknownFields, other._unknownFields);
@@ -1221,7 +1276,8 @@ namespace IotGrpcLearning.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (DeviceId.Length != 0) hash ^= DeviceId.GetHashCode();
+      if (DeviceId != 0) hash ^= DeviceId.GetHashCode();
+      if (DeviceName.Length != 0) hash ^= DeviceName.GetHashCode();
       if (Temperature != 0D) hash ^= pbc::ProtobufEqualityComparers.BitwiseDoubleEqualityComparer.GetHashCode(Temperature);
       if (UnixMs != 0L) hash ^= UnixMs.GetHashCode();
       if (_unknownFields != null) {
@@ -1242,16 +1298,20 @@ namespace IotGrpcLearning.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (DeviceId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(DeviceId);
+      if (DeviceId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(DeviceId);
+      }
+      if (DeviceName.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(DeviceName);
       }
       if (Temperature != 0D) {
-        output.WriteRawTag(17);
+        output.WriteRawTag(25);
         output.WriteDouble(Temperature);
       }
       if (UnixMs != 0L) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteInt64(UnixMs);
       }
       if (_unknownFields != null) {
@@ -1264,16 +1324,20 @@ namespace IotGrpcLearning.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (DeviceId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(DeviceId);
+      if (DeviceId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(DeviceId);
+      }
+      if (DeviceName.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(DeviceName);
       }
       if (Temperature != 0D) {
-        output.WriteRawTag(17);
+        output.WriteRawTag(25);
         output.WriteDouble(Temperature);
       }
       if (UnixMs != 0L) {
-        output.WriteRawTag(24);
+        output.WriteRawTag(32);
         output.WriteInt64(UnixMs);
       }
       if (_unknownFields != null) {
@@ -1286,8 +1350,11 @@ namespace IotGrpcLearning.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (DeviceId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(DeviceId);
+      if (DeviceId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(DeviceId);
+      }
+      if (DeviceName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(DeviceName);
       }
       if (Temperature != 0D) {
         size += 1 + 8;
@@ -1307,8 +1374,11 @@ namespace IotGrpcLearning.Proto {
       if (other == null) {
         return;
       }
-      if (other.DeviceId.Length != 0) {
+      if (other.DeviceId != 0) {
         DeviceId = other.DeviceId;
+      }
+      if (other.DeviceName.Length != 0) {
+        DeviceName = other.DeviceName;
       }
       if (other.Temperature != 0D) {
         Temperature = other.Temperature;
@@ -1331,15 +1401,19 @@ namespace IotGrpcLearning.Proto {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
-            DeviceId = input.ReadString();
+          case 8: {
+            DeviceId = input.ReadInt32();
             break;
           }
-          case 17: {
+          case 18: {
+            DeviceName = input.ReadString();
+            break;
+          }
+          case 25: {
             Temperature = input.ReadDouble();
             break;
           }
-          case 24: {
+          case 32: {
             UnixMs = input.ReadInt64();
             break;
           }
@@ -1358,15 +1432,19 @@ namespace IotGrpcLearning.Proto {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            DeviceId = input.ReadString();
+          case 8: {
+            DeviceId = input.ReadInt32();
             break;
           }
-          case 17: {
+          case 18: {
+            DeviceName = input.ReadString();
+            break;
+          }
+          case 25: {
             Temperature = input.ReadDouble();
             break;
           }
-          case 24: {
+          case 32: {
             UnixMs = input.ReadInt64();
             break;
           }
@@ -1413,6 +1491,7 @@ namespace IotGrpcLearning.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public DeviceStatusResponse(DeviceStatusResponse other) : this() {
       deviceId_ = other.deviceId_;
+      deviceName_ = other.deviceName_;
       health_ = other.health_;
       details_ = other.details_;
       unixMs_ = other.unixMs_;
@@ -1427,18 +1506,30 @@ namespace IotGrpcLearning.Proto {
 
     /// <summary>Field number for the "device_id" field.</summary>
     public const int DeviceIdFieldNumber = 1;
-    private string deviceId_ = "";
+    private int deviceId_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string DeviceId {
+    public int DeviceId {
       get { return deviceId_; }
       set {
-        deviceId_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        deviceId_ = value;
+      }
+    }
+
+    /// <summary>Field number for the "device_name" field.</summary>
+    public const int DeviceNameFieldNumber = 2;
+    private string deviceName_ = "";
+    [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
+    [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
+    public string DeviceName {
+      get { return deviceName_; }
+      set {
+        deviceName_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
       }
     }
 
     /// <summary>Field number for the "health" field.</summary>
-    public const int HealthFieldNumber = 2;
+    public const int HealthFieldNumber = 3;
     private string health_ = "";
     /// <summary>
     /// "OK" | "WARN" | "CRIT"
@@ -1453,7 +1544,7 @@ namespace IotGrpcLearning.Proto {
     }
 
     /// <summary>Field number for the "details" field.</summary>
-    public const int DetailsFieldNumber = 3;
+    public const int DetailsFieldNumber = 4;
     private string details_ = "";
     /// <summary>
     /// optional free text
@@ -1468,7 +1559,7 @@ namespace IotGrpcLearning.Proto {
     }
 
     /// <summary>Field number for the "unix_ms" field.</summary>
-    public const int UnixMsFieldNumber = 4;
+    public const int UnixMsFieldNumber = 5;
     private long unixMs_;
     /// <summary>
     /// ms since epoch (time when status was observed)
@@ -1498,6 +1589,7 @@ namespace IotGrpcLearning.Proto {
         return true;
       }
       if (DeviceId != other.DeviceId) return false;
+      if (DeviceName != other.DeviceName) return false;
       if (Health != other.Health) return false;
       if (Details != other.Details) return false;
       if (UnixMs != other.UnixMs) return false;
@@ -1508,7 +1600,8 @@ namespace IotGrpcLearning.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (DeviceId.Length != 0) hash ^= DeviceId.GetHashCode();
+      if (DeviceId != 0) hash ^= DeviceId.GetHashCode();
+      if (DeviceName.Length != 0) hash ^= DeviceName.GetHashCode();
       if (Health.Length != 0) hash ^= Health.GetHashCode();
       if (Details.Length != 0) hash ^= Details.GetHashCode();
       if (UnixMs != 0L) hash ^= UnixMs.GetHashCode();
@@ -1530,20 +1623,24 @@ namespace IotGrpcLearning.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (DeviceId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(DeviceId);
+      if (DeviceId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(DeviceId);
+      }
+      if (DeviceName.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(DeviceName);
       }
       if (Health.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(Health);
       }
       if (Details.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteString(Details);
       }
       if (UnixMs != 0L) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteInt64(UnixMs);
       }
       if (_unknownFields != null) {
@@ -1556,20 +1653,24 @@ namespace IotGrpcLearning.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (DeviceId.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(DeviceId);
+      if (DeviceId != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(DeviceId);
+      }
+      if (DeviceName.Length != 0) {
+        output.WriteRawTag(18);
+        output.WriteString(DeviceName);
       }
       if (Health.Length != 0) {
-        output.WriteRawTag(18);
+        output.WriteRawTag(26);
         output.WriteString(Health);
       }
       if (Details.Length != 0) {
-        output.WriteRawTag(26);
+        output.WriteRawTag(34);
         output.WriteString(Details);
       }
       if (UnixMs != 0L) {
-        output.WriteRawTag(32);
+        output.WriteRawTag(40);
         output.WriteInt64(UnixMs);
       }
       if (_unknownFields != null) {
@@ -1582,8 +1683,11 @@ namespace IotGrpcLearning.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (DeviceId.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(DeviceId);
+      if (DeviceId != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(DeviceId);
+      }
+      if (DeviceName.Length != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeStringSize(DeviceName);
       }
       if (Health.Length != 0) {
         size += 1 + pb::CodedOutputStream.ComputeStringSize(Health);
@@ -1606,8 +1710,11 @@ namespace IotGrpcLearning.Proto {
       if (other == null) {
         return;
       }
-      if (other.DeviceId.Length != 0) {
+      if (other.DeviceId != 0) {
         DeviceId = other.DeviceId;
+      }
+      if (other.DeviceName.Length != 0) {
+        DeviceName = other.DeviceName;
       }
       if (other.Health.Length != 0) {
         Health = other.Health;
@@ -1633,19 +1740,23 @@ namespace IotGrpcLearning.Proto {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
-            DeviceId = input.ReadString();
+          case 8: {
+            DeviceId = input.ReadInt32();
             break;
           }
           case 18: {
-            Health = input.ReadString();
+            DeviceName = input.ReadString();
             break;
           }
           case 26: {
+            Health = input.ReadString();
+            break;
+          }
+          case 34: {
             Details = input.ReadString();
             break;
           }
-          case 32: {
+          case 40: {
             UnixMs = input.ReadInt64();
             break;
           }
@@ -1664,19 +1775,23 @@ namespace IotGrpcLearning.Proto {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            DeviceId = input.ReadString();
+          case 8: {
+            DeviceId = input.ReadInt32();
             break;
           }
           case 18: {
-            Health = input.ReadString();
+            DeviceName = input.ReadString();
             break;
           }
           case 26: {
+            Health = input.ReadString();
+            break;
+          }
+          case 34: {
             Details = input.ReadString();
             break;
           }
-          case 32: {
+          case 40: {
             UnixMs = input.ReadInt64();
             break;
           }
@@ -1737,13 +1852,13 @@ namespace IotGrpcLearning.Proto {
 
     /// <summary>Field number for the "id" field.</summary>
     public const int IdFieldNumber = 1;
-    private string id_ = "";
+    private int id_;
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
-    public string Id {
+    public int Id {
       get { return id_; }
       set {
-        id_ = pb::ProtoPreconditions.CheckNotNull(value, "value");
+        id_ = value;
       }
     }
 
@@ -1770,7 +1885,7 @@ namespace IotGrpcLearning.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public override int GetHashCode() {
       int hash = 1;
-      if (Id.Length != 0) hash ^= Id.GetHashCode();
+      if (Id != 0) hash ^= Id.GetHashCode();
       if (_unknownFields != null) {
         hash ^= _unknownFields.GetHashCode();
       }
@@ -1789,9 +1904,9 @@ namespace IotGrpcLearning.Proto {
     #if !GOOGLE_PROTOBUF_REFSTRUCT_COMPATIBILITY_MODE
       output.WriteRawMessage(this);
     #else
-      if (Id.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Id);
+      if (Id != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Id);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(output);
@@ -1803,9 +1918,9 @@ namespace IotGrpcLearning.Proto {
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute]
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     void pb::IBufferMessage.InternalWriteTo(ref pb::WriteContext output) {
-      if (Id.Length != 0) {
-        output.WriteRawTag(10);
-        output.WriteString(Id);
+      if (Id != 0) {
+        output.WriteRawTag(8);
+        output.WriteInt32(Id);
       }
       if (_unknownFields != null) {
         _unknownFields.WriteTo(ref output);
@@ -1817,8 +1932,8 @@ namespace IotGrpcLearning.Proto {
     [global::System.CodeDom.Compiler.GeneratedCode("protoc", null)]
     public int CalculateSize() {
       int size = 0;
-      if (Id.Length != 0) {
-        size += 1 + pb::CodedOutputStream.ComputeStringSize(Id);
+      if (Id != 0) {
+        size += 1 + pb::CodedOutputStream.ComputeInt32Size(Id);
       }
       if (_unknownFields != null) {
         size += _unknownFields.CalculateSize();
@@ -1832,7 +1947,7 @@ namespace IotGrpcLearning.Proto {
       if (other == null) {
         return;
       }
-      if (other.Id.Length != 0) {
+      if (other.Id != 0) {
         Id = other.Id;
       }
       _unknownFields = pb::UnknownFieldSet.MergeFrom(_unknownFields, other._unknownFields);
@@ -1850,8 +1965,8 @@ namespace IotGrpcLearning.Proto {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, input);
             break;
-          case 10: {
-            Id = input.ReadString();
+          case 8: {
+            Id = input.ReadInt32();
             break;
           }
         }
@@ -1869,8 +1984,8 @@ namespace IotGrpcLearning.Proto {
           default:
             _unknownFields = pb::UnknownFieldSet.MergeFieldFrom(_unknownFields, ref input);
             break;
-          case 10: {
-            Id = input.ReadString();
+          case 8: {
+            Id = input.ReadInt32();
             break;
           }
         }
