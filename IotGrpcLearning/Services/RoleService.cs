@@ -65,8 +65,6 @@ namespace IotGrpcLearning.Services
 
         public async Task<RolesDto?> GetAsync(int id, CancellationToken ct = default)
         {
-		 
-
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
 

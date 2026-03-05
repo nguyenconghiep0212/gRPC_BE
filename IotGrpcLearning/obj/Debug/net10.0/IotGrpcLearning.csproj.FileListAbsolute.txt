@@ -69,3 +69,11 @@ C:\Users\v-connguyen\source\repos\IotGrpcLearning\IotGrpcLearning\obj\Debug\net1
 C:\Users\v-connguyen\source\repos\IotGrpcLearning\IotGrpcLearning\obj\Debug\net10.0\IotGrpcLearning.pdb
 C:\Users\v-connguyen\source\repos\IotGrpcLearning\IotGrpcLearning\obj\Debug\net10.0\IotGrpcLearning.genruntimeconfig.cache
 C:\Users\v-connguyen\source\repos\IotGrpcLearning\IotGrpcLearning\obj\Debug\net10.0\ref\IotGrpcLearning.dll
+C:\Users\v-connguyen\source\repos\IotGrpcLearning\IotGrpcLearning\bin\Debug\net10.0\Infrastructure\SeedData\employees.json
+C:\Users\v-connguyen\source\repos\IotGrpcLearning\IotGrpcLearning\bin\Debug\net10.0\Infrastructure\SeedData\customers.json
+C:\Users\v-connguyen\source\repos\IotGrpcLearning\IotGrpcLearning\bin\Debug\net10.0\Infrastructure\SeedData\divisions.json
+C:\Users\v-connguyen\source\repos\IotGrpcLearning\IotGrpcLearning\bin\Debug\net10.0\Infrastructure\SeedData\projects.json
+C:\Users\v-connguyen\source\repos\IotGrpcLearning\IotGrpcLearning\bin\Debug\net10.0\Infrastructure\SeedData\roles.json
+C:\Users\v-connguyen\source\repos\IotGrpcLearning\IotGrpcLearning\bin\Debug\net10.0\Infrastructure\SeedData\sites.json
+C:\Users\v-connguyen\source\repos\IotGrpcLearning\IotGrpcLearning\bin\Debug\net10.0\Infrastructure\SeedData\vendors.json
+C:\Users\v-connguyen\source\repos\IotGrpcLearning\IotGrpcLearning\bin\Debug\net10.0\Infrastructure\SeedData\test_suite.json

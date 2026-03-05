@@ -1,0 +1,57 @@
+[
+	{
+		"Name": "Korea",
+		"Location": "{\"lat\":37.5665,\"long\":126.9780}",
+		"Address": "Sejong-daero 209, Jongno-gu, Seoul"
+	},
+	{
+		"Name": "China",
+		"Location": "{\"lat\":39.9042,\"long\":116.4074}",
+		"Address": "No. 1, East Chang'an Avenue, Dongcheng, Beijing"
+	},
+	{
+		"Name": "Vietnam",
+		"Location": "{\"lat\":21.0278,\"long\":105.8342}",
+		"Address": "Ba Dinh District, Hanoi"
+	},
+	{
+		"Name": "Indonesia",
+		"Location": "{\"lat\":-6.2088,\"long\":106.8456}",
+		"Address": "Jl. Medan Merdeka Utara, Jakarta"
+	},
+	{
+		"Name": "Thailand",
+		"Location": "{\"lat\":13.7563,\"long\":100.5018}",
+		"Address": "Krung Kasem Road, Phra Nakhon, Bangkok"
+	},
+	{
+		"Name": "India",
+		"Location": "{\"lat\":28.6139,\"long\":77.2090}",
+		"Address": "Rajpath Marg, New Delhi"
+	},
+	{
+		"Name": "Mexico",
+		"Location": "{\"lat\":19.4326,\"long\":-99.1332}",
+		"Address": "Plaza de la Constitución, Mexico City"
+	},
+	{
+		"Name": "Brazil",
+		"Location": "{\"lat\":-15.8267,\"long\":-47.9218}",
+		"Address": "Praça dos Três Poderes, Brasília"
+	},
+	{
+		"Name": "UK",
+		"Location": "{\"lat\":51.5074,\"long\":-0.1278}",
+		"Address": "10 Downing Street, London"
+	},
+	{
+		"Name": "USA",
+		"Location": "{\"lat\":38.8977,\"long\":-77.0365}",
+		"Address": "1600 Pennsylvania Avenue NW, Washington, DC"
+	},
+	{
+		"Name": "Poland",
+		"Location": "{\"lat\":52.2297,\"long\":21.0122}",
+		"Address": "Krakowskie Przedmieście, Warsaw"
+	}
+]
