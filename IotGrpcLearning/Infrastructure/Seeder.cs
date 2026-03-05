@@ -5,16 +5,20 @@ using System;
 using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Hosting;
 
 namespace IotGrpcLearning.Infrastructure
 {
 	public sealed class Seeder
 	{
 		private readonly ISqliteConnectionFactory _dbFactory;
+		private readonly string _contentRoot;
 
-		public Seeder(ISqliteConnectionFactory dbFactory)
+		public Seeder(ISqliteConnectionFactory dbFactory, IHostEnvironment env)
 		{
 			_dbFactory = dbFactory ?? throw new ArgumentNullException(nameof(dbFactory));
+			_contentRoot = env?.ContentRootPath ?? AppContext.BaseDirectory;
+
 		}
 
 		private sealed record MachineSeed(
@@ -37,14 +41,20 @@ namespace IotGrpcLearning.Infrastructure
 			// Order chosen to avoid FK constraint violations when deleting rows:
 			var tables = new[]
 			{
-				"MachineStatus",
-				"Machines",
+				// Independent tables first
 				"Sites",
 				"Divisions",
 				"Roles",
+				"Vendors",
 				"Customers",
-				"Vendors"
-			};
+				"TestSuite",
+				// Then dependent tables
+				"Employees",
+				"Projects",
+				"MachineStatus",
+				"Machines"
+				// Relationship tables last
+			} ;
 
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
@@ -90,15 +100,8 @@ namespace IotGrpcLearning.Infrastructure
 		/// Uses a transaction and parameterized SQL to avoid SQL injection.
 		/// </summary>
 		public async Task SeedVendorAsync(CancellationToken ct = default)
-		{
-			var samples = new[]
-			{
-				"Semiki",
-				"HCL",
-				"MicroTest",
-				"Axxon",
-				"NextPCB"
-			};
+		{ 
+			VendorDto[] samples = JsonFileLoader.LoadFromJson<VendorDto>(Path.Combine("Infrastructure", "SeedData", "vendors.json"), _contentRoot);
 
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
@@ -118,10 +121,46 @@ namespace IotGrpcLearning.Infrastructure
 			p.ParameterName = "@name";
 			cmd.Parameters.Add(p);
 
-			foreach (var name in samples)
+			foreach (var s in samples)
 			{
 				ct.ThrowIfCancellationRequested();
-				p.Value = name;
+				p.Value = s.Name;
+				await cmd.ExecuteNonQueryAsync(ct);
+			}
+
+			tx.Commit();
+		}
+
+		public async Task SeedTestSuiteAsync(CancellationToken ct = default)
+		{
+			TestSuiteDto[] samples = JsonFileLoader.LoadFromJson<TestSuiteDto>(Path.Combine("Infrastructure", "SeedData", "test_suite.json"), _contentRoot);
+
+			using var conn = _dbFactory.CreateConnection();
+			await conn.OpenAsync(ct);
+
+			using var tx = conn.BeginTransaction();
+			using var cmd = conn.CreateCommand();
+			cmd.Transaction = tx;
+
+			// Insert only if that name does not already exist (idempotent).
+			cmd.CommandText = @"
+                INSERT INTO TestSuite (name, machine, path, detail)
+                SELECT @name, @machine, @path, @detail
+                WHERE NOT EXISTS (SELECT 1 FROM TestSuite WHERE name = @name LIMIT 1);
+            ";
+
+			var pName = cmd.CreateParameter(); pName.ParameterName = "@name"; cmd.Parameters.Add(pName);
+			var pMachineId = cmd.CreateParameter(); pMachineId.ParameterName = "@machine"; cmd.Parameters.Add(pMachineId);
+			var pPath = cmd.CreateParameter(); pPath.ParameterName = "@path"; cmd.Parameters.Add(pPath);
+			var pDetail = cmd.CreateParameter(); pDetail.ParameterName = "@detail"; cmd.Parameters.Add(pDetail);
+
+			foreach (var s in samples)
+			{
+				ct.ThrowIfCancellationRequested();
+				pName.Value = s.Name;
+				pMachineId.Value = s.MachineId;
+				pPath.Value = s.Path;
+				pDetail.Value = s.Detail;
 				await cmd.ExecuteNonQueryAsync(ct);
 			}
 
@@ -130,13 +169,7 @@ namespace IotGrpcLearning.Infrastructure
 
 		public async Task SeedCustomerAsync(CancellationToken ct = default)
 		{
-			var samples = new[]
-			{
-				"Samsung",
-				"Apple",
-				"LG",
-				"Asus",
-			};
+			CustomerDto[] samples = JsonFileLoader.LoadFromJson<CustomerDto>(Path.Combine("Infrastructure", "SeedData", "customers.json"), _contentRoot);
 
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
@@ -156,10 +189,10 @@ namespace IotGrpcLearning.Infrastructure
 			p.ParameterName = "@name";
 			cmd.Parameters.Add(p);
 
-			foreach (var name in samples)
+			foreach (var s in samples)
 			{
 				ct.ThrowIfCancellationRequested();
-				p.Value = name;
+				p.Value = s.Name;
 				await cmd.ExecuteNonQueryAsync(ct);
 			}
 
@@ -168,17 +201,7 @@ namespace IotGrpcLearning.Infrastructure
 
 		public async Task SeedRolesAsync(CancellationToken ct = default)
 		{
-			var samples = new[]
-			{
-				"Operator",
-				"Project Manager",
-				"Failure Analysis",
-				"Software Engineer",
-				"Line Manager",
-				"Automation Engineer",
-				"Division Director",
-				"Director"
-			};
+			RolesDto[] samples = JsonFileLoader.LoadFromJson<RolesDto>(Path.Combine("Infrastructure", "SeedData", "roles.json"), _contentRoot); 
 
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
@@ -198,10 +221,10 @@ namespace IotGrpcLearning.Infrastructure
 			p.ParameterName = "@name";
 			cmd.Parameters.Add(p);
 
-			foreach (var name in samples)
+			foreach (var s in samples)
 			{
 				ct.ThrowIfCancellationRequested();
-				p.Value = name;
+				p.Value = s.Name;
 				await cmd.ExecuteNonQueryAsync(ct);
 			}
 
@@ -209,16 +232,8 @@ namespace IotGrpcLearning.Infrastructure
 		}
 
 		public async Task SeedDivisionAsync(CancellationToken ct = default)
-		{
-			var samples = new[]
-			{
-				"Software Divions",
-				"Electronic Division",
-				"Failure Analysis Division",
-				"Engineering Division",
-				"Manufactoring Division",
-				"Business Division"
-			};
+		{ 
+			DivisionsDto[] samples = JsonFileLoader.LoadFromJson<DivisionsDto>(Path.Combine("Infrastructure", "SeedData", "divisions.json"), _contentRoot);
 
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
@@ -238,10 +253,10 @@ namespace IotGrpcLearning.Infrastructure
 			p.ParameterName = "@name";
 			cmd.Parameters.Add(p);
 
-			foreach (var name in samples)
+			foreach (var s in samples)
 			{
 				ct.ThrowIfCancellationRequested();
-				p.Value = name;
+				p.Value = s.Name;
 				await cmd.ExecuteNonQueryAsync(ct);
 			}
 
@@ -250,20 +265,7 @@ namespace IotGrpcLearning.Infrastructure
 
 		public async Task SeedSiteAsync(CancellationToken ct = default)
 		{
-			var samples = new[]
-			{
-				new { Name = "Korea", Location = "{lat:37.5665,long:126.9780}", Address = "Sejong-daero 209, Jongno-gu, Seoul" },          // Seoul
-				new { Name = "China", Location = "{lat:39.9042,long:116.4074}", Address = "No. 1, East Chang'an Avenue, Dongcheng, Beijing" }, // Beijing
-				new { Name = "Vietnam", Location = "{lat:21.0278,long:105.8342}", Address = "Ba Dinh District, Hanoi" },                  // Hanoi
-				new { Name = "Indonesia", Location = "{lat:-6.2088,long:106.8456}", Address = "Jl. Medan Merdeka Utara, Jakarta" },       // Jakarta
-				new { Name = "Thailand", Location = "{lat:13.7563,long:100.5018}", Address = "Krung Kasem Road, Phra Nakhon, Bangkok" },  // Bangkok
-				new { Name = "India", Location = "{lat:28.6139,long:77.2090}", Address = "Rajpath Marg, New Delhi" },                    // New Delhi
-				new { Name = "Mexico", Location = "{lat:19.4326,long:-99.1332}", Address = "Plaza de la Constitución, Mexico City" },    // Mexico City
-				new { Name = "Brazil", Location = "{lat:-15.8267,long:-47.9218}", Address = "Praça dos Três Poderes, Brasília" },         // Brasília
-				new { Name = "UK", Location = "{lat:51.5074,long:-0.1278}", Address = "10 Downing Street, London" },                     // London
-				new { Name = "USA", Location = "{lat:38.8977,long:-77.0365}", Address = "1600 Pennsylvania Avenue NW, Washington, DC" }, // Washington, D.C.
-				new { Name = "Poland", Location = "{lat:52.2297,long:21.0122}", Address = "Krakowskie Przedmieście, Warsaw" }             // Warsaw
-			};
+			SitesDto[] samples = JsonFileLoader.LoadFromJson<SitesDto>(Path.Combine("Infrastructure", "SeedData", "sites.json"), _contentRoot);
 
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
@@ -292,6 +294,82 @@ namespace IotGrpcLearning.Infrastructure
 				await cmd.ExecuteNonQueryAsync(ct);
 			}
 
+			tx.Commit();
+		}
+
+		public async Task SeedProjectAsync(CancellationToken ct = default)
+		{
+			ProjectDto[] samples = JsonFileLoader.LoadFromJson<ProjectDto>(Path.Combine("Infrastructure", "SeedData", "projects.json"), _contentRoot);
+
+			using var conn = _dbFactory.CreateConnection();
+			await conn.OpenAsync(ct);
+
+			using var tx = conn.BeginTransaction();
+			using var cmd = conn.CreateCommand();
+			cmd.Transaction = tx;
+
+			// Insert only if that name does not already exist (idempotent).
+			cmd.CommandText = @"
+                INSERT INTO Projects (name, customers_id, site, detail)
+                SELECT @name, @customers_id, @site, @detail
+                WHERE NOT EXISTS (SELECT 1 FROM Projects WHERE name = @name LIMIT 1);
+           ";
+
+			var pName = cmd.CreateParameter(); pName.ParameterName = "@name"; cmd.Parameters.Add(pName);
+			var pCustomerId = cmd.CreateParameter(); pCustomerId.ParameterName = "@customers_id"; cmd.Parameters.Add(pCustomerId);
+			var pSite = cmd.CreateParameter(); pSite.ParameterName = "@site"; cmd.Parameters.Add(pSite);
+			var pDetail = cmd.CreateParameter(); pDetail.ParameterName = "@detail"; cmd.Parameters.Add(pDetail);
+
+			foreach (var s in samples)
+			{
+				ct.ThrowIfCancellationRequested();
+				pName.Value = s.Name ?? string.Empty;
+				pCustomerId.Value = s.CustomerId;
+				pSite.Value = s.SiteId;
+				pDetail.Value = s.Details ?? string.Empty;
+				await cmd.ExecuteNonQueryAsync(ct);
+			}
+
+			tx.Commit();
+		}
+
+		public async Task SeedEmployeeAsync(CancellationToken ct = default)
+		{
+			EmployeesDto[] samples = JsonFileLoader.LoadFromJson<EmployeesDto>(Path.Combine("Infrastructure", "SeedData", "employees.json"), _contentRoot);
+			using var conn = _dbFactory.CreateConnection();
+			await conn.OpenAsync(ct);
+
+			using var tx = conn.BeginTransaction();
+			using var cmd = conn.CreateCommand();
+			cmd.Transaction = tx;
+
+			// Insert only if that name does not already exist (idempotent).
+			cmd.CommandText = @"
+                INSERT INTO Employees (avatar_url, name, email, role_id, division_id, supervisor, site)
+                SELECT @avatar_url, @name, @email, @role_id, @division_id, @supervisor, @site
+                WHERE NOT EXISTS (SELECT 1 FROM Employees WHERE name = @name LIMIT 1);
+            ";
+
+			var pAvatarUrl = cmd.CreateParameter(); pAvatarUrl.ParameterName = "@avatar_url"; cmd.Parameters.Add(pAvatarUrl);
+			var pName = cmd.CreateParameter(); pName.ParameterName = "@name"; cmd.Parameters.Add(pName);
+			var pEmail = cmd.CreateParameter(); pEmail.ParameterName = "@email"; cmd.Parameters.Add(pEmail);
+			var pRoleId = cmd.CreateParameter(); pRoleId.ParameterName = "@role_id"; cmd.Parameters.Add(pRoleId);
+			var pDivisionId = cmd.CreateParameter(); pDivisionId.ParameterName = "@division_id"; cmd.Parameters.Add(pDivisionId);
+			var pSupervisor = cmd.CreateParameter(); pSupervisor.ParameterName = "@supervisor"; cmd.Parameters.Add(pSupervisor);
+			var pSite = cmd.CreateParameter(); pSite.ParameterName = "@site"; cmd.Parameters.Add(pSite);
+
+			foreach (var employee in samples)
+			{
+				ct.ThrowIfCancellationRequested();
+				pAvatarUrl.Value = employee.AvatarUrl;
+				pName.Value = employee.Name;
+				pEmail.Value = employee.Email;
+				pRoleId.Value = employee.RoleId;
+				pDivisionId.Value = employee.DivisionId;
+				pSupervisor.Value = (object?)employee.SupervisorId ?? DBNull.Value;
+				pSite.Value = employee.SiteId;
+				await cmd.ExecuteNonQueryAsync(ct);
+			}
 			tx.Commit();
 		}
 
@@ -410,6 +488,7 @@ namespace IotGrpcLearning.Infrastructure
 			tx.Commit();
 		}
 
+
 		#region ==== Helper ====
 		// helper that ensures a lookup row exists and returns its id (in same transaction)
 		async Task<int> EnsureLookupIdAsync(SqliteConnection conn, SqliteTransaction tx, CancellationToken ct, string table, string name, string additionalInsertColumns = "", object? additionalInsertValues = null)
@@ -447,7 +526,7 @@ namespace IotGrpcLearning.Infrastructure
 
 			var newId = await ins.ExecuteScalarAsync(ct);
 			return Convert.ToInt32(newId);
-		}
+		} 
 		#endregion
 	}
 }

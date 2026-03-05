@@ -19,17 +19,19 @@ public class MachinesController : ControllerBase
 
 	// POST /api/machine/list
 	[HttpPost("list")]
-	public async Task<ActionResult<IEnumerable<MachineDto>>> List(PaginationDto body)
+	public async Task<ActionResult<IEnumerable<MachineResponse>>> List(PaginationDto body)
 	{
 		var devices = await _service.GetAllAsync(body);
-		var result = devices.Select(d => new MachineDto(
+		var result = devices.Select(d => new MachineResponse(
 			d.Id,
 			d.Name,
 			d.Alias,
 			d.Details,
+			d.VendorId,
 			d.Vendor,
 			d.PurchasePrice,
 			d.PurchaseDate,
+			d.SiteId,
 			d.Site));
 
 		return Ok(devices);
@@ -37,20 +39,23 @@ public class MachinesController : ControllerBase
 
 	// GET /api/machine/{machineId}/detail
 	[HttpGet("{machineId}/detail")]
-	public async Task<ActionResult<MachineDto>> Detail(int machineId)
+	public async Task<ActionResult<MachineResponse>> Detail(int machineId)
 	{
 		var d = await _service.GetAsync(machineId);
 		if (d is null)
 			return NotFound(new { error = "machine not found" });
 
-		return Ok(new MachineDto(d.Id,
- 			d.Name,
+		return Ok(new MachineResponse(
+ 			d.Id,
+			d.Name,
 			d.Alias,
 			d.Details,
+			d.VendorId,
 			d.Vendor,
 			d.PurchasePrice,
 			d.PurchaseDate,
- 			d.Site));
+			d.SiteId,
+			d.Site));
 	}
 
 	// POST /api/machine/create

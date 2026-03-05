@@ -1,0 +1,68 @@
+[
+	{
+		"Name": "BnE",
+		"CustomerId": 1,
+		"SiteId": 1,
+		"Details": "Benham and Electro"
+	},
+	{
+		"Name": "Phineous",
+		"CustomerId": 1,
+		"SiteId": 1,
+		"Details": "Phineous"
+	},
+	{
+		"Name": "Rossevelt",
+		"CustomerId": 3,
+		"SiteId": 4,
+		"Details": "Rossevelt"
+	},
+	{
+		"Name": "Killian",
+		"CustomerId": 1,
+		"SiteId": 2,
+		"Details": "Killian"
+	},
+	{
+		"Name": "Thanos",
+		"CustomerId": 1,
+		"SiteId": 7,
+		"Details": "Thanos"
+	},
+	{
+		"Name": "HnR",
+		"CustomerId": 3,
+		"SiteId": 2,
+		"Details": "Hadelia and Rossford"
+	},
+	{
+		"Name": "Mallean",
+		"CustomerId": 2,
+		"SiteId": 2,
+		"Details": "Mallean"
+	},
+	{
+		"Name": "BirchBay",
+		"CustomerId": 1,
+		"SiteId": 3,
+		"Details": "BirchBay"
+	},
+	{
+		"Name": "MnM",
+		"CustomerId": 2,
+		"SiteId": 6,
+		"Details": "Monzino and Mirabay"
+	},
+	{
+		"Name": "Purmellia",
+		"CustomerId": 1,
+		"SiteId": 1,
+		"Details": "Purmellia"
+	},
+	{
+		"Name": "Makayla",
+		"CustomerId": 4,
+		"SiteId": 9,
+		"Details": "Makayla"
+	}
+]

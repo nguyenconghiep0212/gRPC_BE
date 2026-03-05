@@ -17,9 +17,12 @@ namespace IotGrpcLearning.Infrastructure
 			builder.Services.AddSingleton<IMachineStatusService, MachineStatusService>();
 			builder.Services.AddSingleton<IVendor, VendorService>();
 			builder.Services.AddSingleton<ICustomer, CustomerService>();
+			builder.Services.AddSingleton<IEmployee, EmployeeService>();
 			builder.Services.AddSingleton<IRole, RoleService>();
 			builder.Services.AddSingleton<IDivision, DivisionService>();
 			builder.Services.AddSingleton<ISite, SiteService>();
+			builder.Services.AddSingleton<IProject, ProjectService>();
+			builder.Services.AddSingleton<ITestSuite, TestSuiteService>();
 		}
 	}
 }

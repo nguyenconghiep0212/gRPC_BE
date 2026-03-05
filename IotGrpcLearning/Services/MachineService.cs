@@ -8,8 +8,10 @@ namespace IotGrpcLearning.Services
 	public sealed class MachineService : IMachineService
 	{
 		private readonly ISqliteConnectionFactory _dbFactory;
+		private readonly Helper _helper;
 		public MachineService(ISqliteConnectionFactory dbFactory)
 		{
+			_helper = new Helper();
 			_dbFactory = dbFactory ?? throw new ArgumentNullException(nameof(dbFactory));
 		}
 
@@ -43,13 +45,13 @@ namespace IotGrpcLearning.Services
 			var newId = Convert.ToInt32(result);
 
 			return new MachineDto(newId, dto.Name ?? string.Empty, dto.Alias ?? string.Empty, dto.Details ?? string.Empty,
-				dto.Vendor, dto.PurchasePrice, dto.PurchaseDate,  dto.Site);
+				dto.Vendor, dto.PurchasePrice, dto.PurchaseDate, dto.Site);
 
 		}
 
 		public async Task<bool> DeleteAsync(int id, CancellationToken ct = default)
 		{
-			 
+
 
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
@@ -62,9 +64,9 @@ namespace IotGrpcLearning.Services
 			return rows > 0;
 		}
 
-		public async Task<IEnumerable<MachineDto>> GetAllAsync(PaginationDto body, CancellationToken ct = default)
+		public async Task<IEnumerable<MachineResponse>> GetAllAsync(PaginationDto body, CancellationToken ct = default)
 		{
-			var list = new List<MachineDto>();
+			var list = new List<MachineResponse>();
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
 
@@ -74,15 +76,32 @@ namespace IotGrpcLearning.Services
 
 			while (await rdr.ReadAsync(ct))
 			{
-				list.Add(ReadMachine(rdr));
-			}
+				MachineDto machine = ReadMachine(rdr);
 
+				string vendorName = await _helper.GetPropertyTableAsync(conn, ct, "Vendors", "id", machine.Vendor.ToString(), "name") ?? string.Empty;
+				string siteName = await _helper.GetPropertyTableAsync(conn, ct, "Sites", "id", machine.Site.ToString(), "name") ?? string.Empty;
+
+				MachineResponse machineResponse = new MachineResponse(
+				machine.Id,
+				machine.Name,
+				machine.Alias,
+				machine.Details,
+				machine.Vendor,
+				vendorName,
+				machine.PurchasePrice,
+				machine.PurchaseDate,
+				machine.Site,
+				siteName
+				);
+
+				list.Add(machineResponse);
+			}
 			return list;
 		}
 
-		public async Task<MachineDto?> GetAsync(int id, CancellationToken ct = default)
+		public async Task<MachineResponse?> GetAsync(int id, CancellationToken ct = default)
 		{
-		 
+
 			using var conn = _dbFactory.CreateConnection();
 			await conn.OpenAsync(ct);
 
@@ -93,14 +112,32 @@ namespace IotGrpcLearning.Services
 			using var rdr = await cmd.ExecuteReaderAsync(ct);
 			if (await rdr.ReadAsync(ct))
 			{
-				return ReadMachine(rdr);
+				MachineDto machine = ReadMachine(rdr);
+
+				string vendorName = await _helper.GetPropertyTableAsync(conn, ct, "Vendors", "id", machine.Vendor.ToString(), "name") ?? string.Empty;
+				string siteName = await _helper.GetPropertyTableAsync(conn, ct, "Sites", "id", machine.Site.ToString(), "name") ?? string.Empty;
+
+				MachineResponse machineResponse = new MachineResponse(
+				machine.Id,
+				machine.Name,
+				machine.Alias,
+				machine.Details,
+				machine.Vendor,
+				vendorName,
+				machine.PurchasePrice,
+				machine.PurchaseDate,
+				machine.Site,
+				siteName
+				);
+
+				return machineResponse;
 			}
 
 			return null;
 		}
 
 		public async Task<bool> UpdateAsync(int id, MachineDto dto, CancellationToken ct = default)
-		{ 
+		{
 
 			if (dto == null) throw new ArgumentNullException(nameof(dto));
 
