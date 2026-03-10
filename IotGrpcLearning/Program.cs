@@ -6,99 +6,56 @@ using IotGrpcLearning.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.Sqlite;
 
-namespace IotGrpcLearning
+var builder = WebApplication.CreateBuilder(args);
+
+// Add services to the container.
+builder.Services.AddGrpc();
+
+// REST API (MVC Controllers)
+builder.Services.AddControllers();
+builder.Services.AddCors(o =>
 {
-	public class Program
-	{
-		public static void Main(string[] args)
-		{
-			var builder = WebApplication.CreateBuilder(args);
+    o.AddPolicy("ui", p => p
+        .WithOrigins("http://localhost:5173")
+        .AllowAnyHeader()
+        .AllowAnyMethod());
+});
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
 
-			// Add services to the container.
-			builder.Services.AddGrpc();
+// Validate and register Sqlite connection factory (extension handles validation and registration)
+builder.AddValidatedSqlite();
 
-			// REST API (MVC Controllers)
-			builder.Services.AddControllers();
-			builder.Services.AddCors(o =>
-			{
-				o.AddPolicy("ui", p => p
-					.WithOrigins("http://localhost:5173") // Vue dev server default
-					.AllowAnyHeader()
-					.AllowAnyMethod());
-			});
-			builder.Services.AddEndpointsApiExplorer();
-			builder.Services.AddSwaggerGen();
+// Health checks
+builder.Services.AddHealthChecks();
 
-			// Validate and register Sqlite connection factory (extension handles validation and registration)
-			builder.AddValidatedSqlite();
+// Configure PasswordOptions from configuration section "Password"
+builder.Services.Configure<PasswordOptions>(builder.Configuration.GetSection("Password"));
 
-			builder.AddSingleton();
+// Register the exception middleware's dependencies (ILogger is registered by the host by default).
+// Any additional infra services you add in Phase 1 should be registered here.
 
-			var app = builder.Build();
+// Build the app
+var app = builder.Build();
 
-			app.UseCors("ui");
-			app.UseSwagger();
-			app.UseSwaggerUI();
+// Add middleware for cross-cutting concerns
+app.UseCors("ui");
 
-			// Map MVC controllers
-			app.MapControllers();
+// Global exception handling middleware (minimal)
+app.UseMiddleware<ExceptionMiddleware>();
 
-			// Map gRPC services
-			app.MapGrpcService<MachineGatewayService>();
+app.UseSwagger();
+app.UseSwaggerUI();
 
-			app.MapGet("/", () => "Device Gateway running. REST: /api, gRPC: DeviceGateway");
+// Health endpoint
+app.MapHealthChecks("/health");
 
-			//// Feed Commands Helper
-			//app.MapPost("/cmd/{deviceId}/{name}", async (string deviceId, string name, ICommandBus bus, HttpContext http) =>
-			//{
-			//	Console.WriteLine($"Received command for device '{deviceId}' - '{name}'");
-			//	var cmd = new Command
-			//	{
-			//		CommandId = Guid.NewGuid().ToString("N"),
-			//		Name = name
-			//	};
+// Map MVC controllers
+app.MapControllers();
 
-			//	if (cmd.Name == "SetThreshold")
-			//	{
-			//		// collect query string as args, e.g., ?key=value
-			//		foreach (var (k, v) in http.Request.Query)
-			//		{
-			//			if (!string.IsNullOrWhiteSpace(k) && v.Count > 0)
-			//				cmd.Args[k] = v[0]!;
-			//		}
-			//		await bus.EnqueueCommandAsync(deviceId, cmd, http.RequestAborted);
-			//		return Results.Ok(new { queued = true, deviceId, cmd = new { cmd.CommandId, cmd.Name, Args = cmd.Args } });
-			//	}
-			//	if (cmd.Name == "StartHeartbeat")
-			//	{
-			//		if (http.Request.Query.Count == 0)
-			//		{
-			//			return Results.BadRequest(new { Error = "No parameter!", Query = new { interval = "int" } });
-			//		}
-			//		foreach (var (k, v) in http.Request.Query)
-			//		{
-			//			if (k != "interval")
-			//			{
-			//				return Results.BadRequest(new { Error = "Incorrect parameter!", Query = new { interval = "int" } });
-			//			}
-			//			if (!string.IsNullOrWhiteSpace(k) && v.Count > 0)
-			//			{
-			//				cmd.Args[k] = v[0]!;
-			//			}
-			//		}
-			//		await bus.EnqueueCommandAsync(deviceId, cmd, http.RequestAborted);
-			//		return Results.Ok(new { queued = true, deviceId, cmd = new { cmd.CommandId, cmd.Name, Args = cmd.Args } });
-			//	}
-			//	if (cmd.Name == "StopHeartbeat")
-			//	{
-			//		await bus.EnqueueCommandAsync(deviceId, cmd, http.RequestAborted);
-			//		return Results.Ok(new { queued = true, deviceId, cmd = new { cmd.CommandId, cmd.Name, Args = cmd.Args } });
-			//	}
-			//	return Results.BadRequest(new { Error = "Incorrect command!" });
-			//});
-			////curl - X POST "https://localhost:7096/cmd/device-1/SetThreshold?metric=temperature&value=38.0" 
+// Map gRPC services
+app.MapGrpcService<MachineGatewayService>();
 
-			app.Run();
-		}
-	}
-}
+app.MapGet("/", () => "Device Gateway running. REST: /api, gRPC: DeviceGateway");
+
+app.Run();

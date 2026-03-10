@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "6Zx7jJacQ3o=",
+  "dgSpecHash": "wwSq7Hpg8vs=",
   "success": true,
   "projectFilePath": "D:\\Personal\\gRPC_BE\\IotGrpcLearning\\IotGrpcLearning.csproj",
   "expectedPackageFiles": [
@@ -13,10 +13,12 @@
     "C:\\Users\\v-connguyen\\.nuget\\packages\\grpc.net.clientfactory\\2.64.0\\grpc.net.clientfactory.2.64.0.nupkg.sha512",
     "C:\\Users\\v-connguyen\\.nuget\\packages\\grpc.net.common\\2.64.0\\grpc.net.common.2.64.0.nupkg.sha512",
     "C:\\Users\\v-connguyen\\.nuget\\packages\\grpc.tools\\2.64.0\\grpc.tools.2.64.0.nupkg.sha512",
+    "C:\\Users\\v-connguyen\\.nuget\\packages\\microsoft.codeanalysis.netanalyzers\\10.0.103\\microsoft.codeanalysis.netanalyzers.10.0.103.nupkg.sha512",
     "C:\\Users\\v-connguyen\\.nuget\\packages\\microsoft.data.sqlite\\10.0.3\\microsoft.data.sqlite.10.0.3.nupkg.sha512",
     "C:\\Users\\v-connguyen\\.nuget\\packages\\microsoft.data.sqlite.core\\10.0.3\\microsoft.data.sqlite.core.10.0.3.nupkg.sha512",
     "C:\\Users\\v-connguyen\\.nuget\\packages\\microsoft.extensions.apidescription.server\\10.0.0\\microsoft.extensions.apidescription.server.10.0.0.nupkg.sha512",
     "C:\\Users\\v-connguyen\\.nuget\\packages\\microsoft.openapi\\2.4.1\\microsoft.openapi.2.4.1.nupkg.sha512",
+    "C:\\Users\\v-connguyen\\.nuget\\packages\\sonaranalyzer.csharp\\10.4.0.108396\\sonaranalyzer.csharp.10.4.0.108396.nupkg.sha512",
     "C:\\Users\\v-connguyen\\.nuget\\packages\\sqlitepclraw.bundle_e_sqlite3\\2.1.11\\sqlitepclraw.bundle_e_sqlite3.2.1.11.nupkg.sha512",
     "C:\\Users\\v-connguyen\\.nuget\\packages\\sqlitepclraw.core\\2.1.11\\sqlitepclraw.core.2.1.11.nupkg.sha512",
     "C:\\Users\\v-connguyen\\.nuget\\packages\\sqlitepclraw.lib.e_sqlite3\\2.1.11\\sqlitepclraw.lib.e_sqlite3.2.1.11.nupkg.sha512",

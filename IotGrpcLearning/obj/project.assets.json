@@ -136,6 +136,9 @@
           "build/Grpc.Tools.targets": {}
         }
       },
+      "Microsoft.CodeAnalysis.NetAnalyzers/10.0.103": {
+        "type": "package"
+      },
       "Microsoft.Data.Sqlite/10.0.3": {
         "type": "package",
         "dependencies": {
@@ -189,6 +192,9 @@
             "related": ".pdb;.xml"
           }
         }
+      },
+      "SonarAnalyzer.CSharp/10.4.0.108396": {
+        "type": "package"
       },
       "SQLitePCLRaw.bundle_e_sqlite3/2.1.11": {
         "type": "package",
@@ -645,6 +651,45 @@
         "tools/windows_x86/protoc.exe"
       ]
     },
+    "Microsoft.CodeAnalysis.NetAnalyzers/10.0.103": {
+      "sha512": "s2+qTvC9YUsor9PIlWZ6cNiyb17ze/UqrQDRHaFeyyxuEstYvzxYMklJPnVnDKuxK9Q75Xwzlq5XrLNMcyzgAQ==",
+      "type": "package",
+      "path": "microsoft.codeanalysis.netanalyzers/10.0.103",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "Icon.png",
+        "ThirdPartyNotices.txt",
+        "analyzers/dotnet/Microsoft.CodeAnalysis.NetAnalyzers.dll",
+        "analyzers/dotnet/Microsoft.CodeAnalysis.NetAnalyzers.xml",
+        "analyzers/dotnet/cs/Microsoft.CodeAnalysis.CSharp.NetAnalyzers.dll",
+        "analyzers/dotnet/cs/Microsoft.CodeAnalysis.CSharp.NetAnalyzers.xml",
+        "analyzers/dotnet/cs/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll",
+        "analyzers/dotnet/de/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll",
+        "analyzers/dotnet/es/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll",
+        "analyzers/dotnet/fr/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll",
+        "analyzers/dotnet/it/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll",
+        "analyzers/dotnet/ja/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll",
+        "analyzers/dotnet/ko/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll",
+        "analyzers/dotnet/pl/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll",
+        "analyzers/dotnet/pt-BR/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll",
+        "analyzers/dotnet/ru/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll",
+        "analyzers/dotnet/tr/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll",
+        "analyzers/dotnet/vb/Microsoft.CodeAnalysis.VisualBasic.NetAnalyzers.dll",
+        "analyzers/dotnet/vb/Microsoft.CodeAnalysis.VisualBasic.NetAnalyzers.xml",
+        "analyzers/dotnet/zh-Hans/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll",
+        "analyzers/dotnet/zh-Hant/Microsoft.CodeAnalysis.NetAnalyzers.resources.dll",
+        "documentation/Analyzer Configuration.md",
+        "documentation/Microsoft.CodeAnalysis.NetAnalyzers.md",
+        "documentation/Microsoft.CodeAnalysis.NetAnalyzers.sarif",
+        "documentation/README.md",
+        "microsoft.codeanalysis.netanalyzers.10.0.103.nupkg.sha512",
+        "microsoft.codeanalysis.netanalyzers.nuspec",
+        "tools/install.ps1",
+        "tools/uninstall.ps1"
+      ]
+    },
     "Microsoft.Data.Sqlite/10.0.3": {
       "sha512": "R/7g5hddFTzey+XOH7Hb3x71DdX5yDu3YqKDJbyn3QKiV6P38bYqkhsoDotanurh5mHLRc9hITE+pxL6Kjcpzw==",
       "type": "package",
@@ -954,6 +999,24 @@
         "microsoft.openapi.nuspec"
       ]
     },
+    "SonarAnalyzer.CSharp/10.4.0.108396": {
+      "sha512": "xGcLZ+dvkVuBbd3sjPur9X+1owSL/iDoxVFJLhMx3/vq1fmoKM2fwvrZ8ReAas6l715GJ/dWU2ckwlrRVopmbg==",
+      "type": "package",
+      "path": "sonaranalyzer.csharp/10.4.0.108396",
+      "hasTools": true,
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "LICENSE.txt",
+        "analyzers/SonarAnalyzer.CSharp.dll",
+        "images/sonarsource_64.png",
+        "license/THIRD-PARTY-NOTICES.txt",
+        "sonaranalyzer.csharp.10.4.0.108396.nupkg.sha512",
+        "sonaranalyzer.csharp.nuspec",
+        "tools/install.ps1",
+        "tools/uninstall.ps1"
+      ]
+    },
     "SQLitePCLRaw.bundle_e_sqlite3/2.1.11": {
       "sha512": "DC4nA7yWnf4UZdgJDF+9Mus4/cb0Y3Sfgi3gDnAoKNAIBwzkskNAbNbyu+u4atT0ruVlZNJfwZmwiEwE5oz9LQ==",
       "type": "package",
@@ -1129,7 +1192,9 @@
   "projectFileDependencyGroups": {
     "net10.0": [
       "Grpc.AspNetCore >= 2.64.0",
+      "Microsoft.CodeAnalysis.NetAnalyzers >= 10.0.103",
       "Microsoft.Data.Sqlite >= 10.0.3",
+      "SonarAnalyzer.CSharp >= 10.4.0.108396",
       "Swashbuckle.AspNetCore >= 10.1.4"
     ]
   },
@@ -1187,9 +1252,21 @@
             "target": "Package",
             "version": "[2.64.0, )"
           },
+          "Microsoft.CodeAnalysis.NetAnalyzers": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[10.0.103, )"
+          },
           "Microsoft.Data.Sqlite": {
             "target": "Package",
             "version": "[10.0.3, )"
+          },
+          "SonarAnalyzer.CSharp": {
+            "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+            "suppressParent": "All",
+            "target": "Package",
+            "version": "[10.4.0.108396, )"
           },
           "Swashbuckle.AspNetCore": {
             "target": "Package",
