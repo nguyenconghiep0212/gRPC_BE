@@ -6,6 +6,7 @@ using System.Text.Json;
 using System.Threading;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Hosting;
+using SQLitePCL;
 
 namespace IotGrpcLearning.Infrastructure
 {
@@ -53,8 +54,9 @@ namespace IotGrpcLearning.Infrastructure
 				"Projects",
 				"MachineStatus",
 				"MachinesInfo",
-				"Machines"
+				"Machines",
 				// Relationship tables last
+				"ProjectEmployee"
 			};
 
 			using var conn = _dbFactory.CreateConnection();
@@ -384,7 +386,6 @@ namespace IotGrpcLearning.Infrastructure
 			tx.Commit();
 		}
 
-
 		public async Task SeedMachineAsync(CancellationToken ct = default)
 		{
 			MachineDto[] samples = JsonFileLoader.LoadFromJson<MachineDto>(Path.Combine("Infrastructure", "SeedData", "machines.json"), _contentRoot);
@@ -517,7 +518,8 @@ namespace IotGrpcLearning.Infrastructure
 			var pLineOverseer = cmd.CreateParameter(); pLineOverseer.ParameterName = "@line_overseer_id"; cmd.Parameters.Add(pLineOverseer);
 			//var pTestSuite = cmd.CreateParameter(); pTestSuite.ParameterName = "@test_suite"; cmd.Parameters.Add(pTestSuite);
 
-			static int getOverseer(int site) {
+			static int getOverseer(int site)
+			{
 				int overseer = 0;
 				switch (site)
 				{
@@ -552,6 +554,38 @@ namespace IotGrpcLearning.Infrastructure
 				index++;
 			}
 
+			tx.Commit();
+		}
+
+		public async Task SeedProjectMemberAsync(CancellationToken ct = default)
+		{
+			ProjectDto[] samples = JsonFileLoader.LoadFromJson<ProjectDto>(Path.Combine("Infrastructure", "SeedData", "projects.json"), _contentRoot);
+
+			using var conn = _dbFactory.CreateConnection();
+			await conn.OpenAsync(ct);
+			using var tx = conn.BeginTransaction();
+			using var cmd = conn.CreateCommand();
+
+			cmd.CommandText = @"
+				  INSERT INTO ProjectEmployee (project_id, employee_id)
+				  SELECT @projectId, e.id
+				  FROM Employees e
+				  JOIN Sites s ON e.site = s.id
+				  WHERE s.id = @siteId;";
+
+			var pProjectId = cmd.CreateParameter(); pProjectId.ParameterName = "@projectId"; cmd.Parameters.Add(pProjectId);
+			var pSiteId = cmd.CreateParameter(); pSiteId.ParameterName = "@siteId"; cmd.Parameters.Add(pSiteId);
+
+			foreach (var sample in samples)
+			{
+				ct.ThrowIfCancellationRequested();
+				// ensure vendor and site exist and get their ids
+
+				pProjectId.Value = sample.Id;
+				pSiteId.Value = sample.SiteId;
+
+				await cmd.ExecuteNonQueryAsync(ct);
+			}
 			tx.Commit();
 		}
 

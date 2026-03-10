@@ -1,10 +1,12 @@
-﻿using Microsoft.AspNetCore.Http.Extensions;
+﻿using IotGrpcLearning.Interfaces;
+using Microsoft.AspNetCore.Http.Extensions;
 using Microsoft.Data.Sqlite;
+using System.Security.Cryptography;
 using System.Text;
 
 namespace IotGrpcLearning.Infrastructure
 {
-	public class Helper
+	public class Helper: IHelper
 	{
 		public async Task<string?> GetPropertyTableAsync(SqliteConnection conn, CancellationToken ct, string table, string column, string columnValue, string getColumn)
 		{
@@ -37,7 +39,6 @@ namespace IotGrpcLearning.Infrastructure
 
 			return total;
 		}
-
 		public (string filterQuery, List<SqliteParameter> parameters) BuildFilterQuery(string tableName, Dictionary<string, string[]> filters)
 		{
 			if (filters == null || filters.Count == 0)
@@ -61,11 +62,11 @@ namespace IotGrpcLearning.Infrastructure
 				{
 					var parameterName = $"@{columnName}Value{i}"; // Create unique parameter name
 					parameterNames.Add(parameterName);
-					parameters.Add(new SqliteParameter(parameterName, filterValues[i]));
+					parameters.Add(new SqliteParameter(parameterName, $"%{filterValues[i]}%")); // Use LIKE with wildcards
 				}
 
-				// Create the IN clause for this column
-				var condition = $"{columnName} IN ({string.Join(", ", parameterNames)})";
+				// Create the LIKE clause for this column
+				var condition = $"{columnName} LIKE {string.Join(" OR ", parameterNames)}";
 				conditions.Add(condition);
 			}
 
@@ -80,8 +81,8 @@ namespace IotGrpcLearning.Infrastructure
 
 			// Create the command
 			var cmd = conn.CreateCommand();
-			var queryBuilder = new StringBuilder($"SELECT COUNT(*) FROM {table}"); 
-		
+			var queryBuilder = new StringBuilder($"SELECT COUNT(*) FROM {table}");
+
 
 			// Build the filter query and add it to the command
 			var (filterQuery, parameters) = BuildFilterQuery(table, filters);
@@ -92,7 +93,7 @@ namespace IotGrpcLearning.Infrastructure
 			{
 				cmd.Parameters.Add(parameter);
 			}
-			cmd.CommandText = queryBuilder.ToString(); 
+			cmd.CommandText = queryBuilder.ToString();
 			// Execute the command and get the total count 
 			using var reader = await cmd.ExecuteReaderAsync(ct);
 			if (await reader.ReadAsync(ct))
@@ -101,6 +102,54 @@ namespace IotGrpcLearning.Infrastructure
 			}
 
 			return total;
+		}
+	}
+	public class PasswordHasher: IHelperPassword
+	{
+		private const int SaltSize = 16; // 128 bit
+		private const int KeySize = 32;  // 256 bit
+		private const int Iterations = 100_000; // increase for more security
+
+		public (string hash, string salt) HashPassword(string password)
+		{
+			// 1. Generate random salt
+			using var rng = RandomNumberGenerator.Create();
+			byte[] saltBytes = new byte[SaltSize];
+			rng.GetBytes(saltBytes);
+
+			// 2. Derive key from password + salt
+			using var pbkdf2 = new Rfc2898DeriveBytes(
+				password,
+				saltBytes,
+				Iterations,
+				HashAlgorithmName.SHA256);
+
+			byte[] key = pbkdf2.GetBytes(KeySize);
+
+			// 3. Convert to Base64 strings for storage
+			string salt = Convert.ToBase64String(saltBytes);
+			string hash = Convert.ToBase64String(key);
+
+			return (hash, salt);
+		}
+
+		public bool VerifyPassword(string password, string storedHash, string storedSalt)
+		{
+			// 1. Decode salt
+			byte[] saltBytes = Convert.FromBase64String(storedSalt);
+
+			// 2. Derive key again from provided password + stored salt
+			using var pbkdf2 = new Rfc2898DeriveBytes(
+				password,
+				saltBytes,
+				Iterations,
+				HashAlgorithmName.SHA256);
+
+			byte[] key = pbkdf2.GetBytes(KeySize);
+			string hash = Convert.ToBase64String(key);
+
+			// 3. Compare hashes (constant-time comparison is better in production)
+			return hash == storedHash;
 		}
 	}
 }

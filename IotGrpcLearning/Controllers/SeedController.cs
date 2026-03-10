@@ -45,7 +45,8 @@ namespace IotGrpcLearning.Controllers
 				(_seeder.SeedTestSuiteAsync,   "Test SUite seeded"),
 				(_seeder.SeedMachineAsync,   "Machines seeded"),
 				(_seeder.SeedEmployeeAsync,   "Employees seeded"),
-				(_seeder.SeedProjectAsync,   "Projects seeded")
+				(_seeder.SeedProjectAsync,   "Projects seeded"),
+				(_seeder.SeedProjectMemberAsync,   "ProjectMember seeded")
 				};
 			foreach (var step in steps)
 			{
@@ -115,6 +116,13 @@ namespace IotGrpcLearning.Controllers
 		[HttpPost("projects")]
 		public Task<IActionResult> SeedProjects(CancellationToken ct = default)
 		  => Seed(_seeder.SeedProjectAsync, "Projects seeded", ct);
+
+		/// <summary>
+		/// POST /api/seed/project_member
+		/// </summary>
+		[HttpPost("project_member")]
+		public Task<IActionResult> SeedProjectMember(CancellationToken ct = default)
+		  => Seed(_seeder.SeedProjectMemberAsync, "project_employee seeded", ct);
 
 		/// <summary>
 		/// POST /api/seed/testsuite

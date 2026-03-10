@@ -793,6 +793,37 @@
   },
   {
     "ContainingType": "IotGrpcLearning.Controllers.ProjectController",
+    "Method": "AddMember",
+    "RelativePath": "api/projects/{projectId}/add_members",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      },
+      {
+        "Name": "memberIds",
+        "Type": "System.Int32[]",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[IotGrpcLearning.Models.ProjectResponse, IotGrpcLearning, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "IotGrpcLearning.Controllers.ProjectController",
     "Method": "Delete",
     "RelativePath": "api/projects/{projectId}/delete",
     "HttpMethod": "DELETE",
@@ -821,6 +852,32 @@
     "ContainingType": "IotGrpcLearning.Controllers.ProjectController",
     "Method": "Detail",
     "RelativePath": "api/projects/{projectId}/detail",
+    "HttpMethod": "GET",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [
+      {
+        "Name": "projectId",
+        "Type": "System.Int32",
+        "IsRequired": true
+      }
+    ],
+    "ReturnTypes": [
+      {
+        "Type": "System.Collections.Generic.IEnumerable\u00601[[IotGrpcLearning.Models.ProjectResponse, IotGrpcLearning, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "MediaTypes": [
+          "text/plain",
+          "application/json",
+          "text/json"
+        ],
+        "StatusCode": 200
+      }
+    ]
+  },
+  {
+    "ContainingType": "IotGrpcLearning.Controllers.ProjectController",
+    "Method": "GetMembers",
+    "RelativePath": "api/projects/{projectId}/get_members",
     "HttpMethod": "GET",
     "IsController": true,
     "Order": 0,
@@ -916,7 +973,7 @@
     ],
     "ReturnTypes": [
       {
-        "Type": "System.Collections.Generic.IEnumerable\u00601[[IotGrpcLearning.Models.ProjectResponse, IotGrpcLearning, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
+        "Type": "IotGrpcLearning.Models.ListDto\u00601[[IotGrpcLearning.Models.ProjectResponse, IotGrpcLearning, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null]]",
         "MediaTypes": [
           "text/plain",
           "application/json",
@@ -1095,6 +1152,16 @@
     "ContainingType": "IotGrpcLearning.Controllers.SeedController",
     "Method": "SeedMachines",
     "RelativePath": "api/seed/machines",
+    "HttpMethod": "POST",
+    "IsController": true,
+    "Order": 0,
+    "Parameters": [],
+    "ReturnTypes": []
+  },
+  {
+    "ContainingType": "IotGrpcLearning.Controllers.SeedController",
+    "Method": "SeedProjectMember",
+    "RelativePath": "api/seed/project_member",
     "HttpMethod": "POST",
     "IsController": true,
     "Order": 0,

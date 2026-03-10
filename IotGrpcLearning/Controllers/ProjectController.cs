@@ -34,19 +34,10 @@ namespace IotGrpcLearning.Controllers
 
 		// POST /api/projects/list
 		[HttpPost("list")]
-		public async Task<ActionResult<IEnumerable<ProjectResponse>>> List(PaginationDto body)
+		public async Task<ActionResult<ListDto<ProjectResponse>>> List(PaginationDto body)
 		{
-			var sites = await _service.GetAllAsync(body);
-			var result = sites.Select(d => new ProjectResponse(
-				d.Id,
-				d.Name,
-				d.CustomerId,
-				d.Customer,
-				d.SiteId,
-				d.Site,
-				d.Details
-				));
-			return Ok(sites);
+			var res = await _service.GetAllAsync(body);
+			return Ok(res);
 		}
 
 		// GET /api/projects/{projectId}/detail
@@ -54,6 +45,22 @@ namespace IotGrpcLearning.Controllers
 		public async Task<ActionResult<IEnumerable<ProjectResponse>>> Detail(int projectId)
 		{
 			var role = await _service.GetAsync(projectId);
+			return Ok(role);
+		}
+
+		// GET /api/projects/{projectId}/get_members
+		[HttpGet("{projectId}/get_members")]
+		public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetMembers(int projectId)
+		{
+			var role = await _service.GetProjectMembers(projectId);
+			return Ok(role);
+		}
+
+		// GET /api/projects/{projectId}/add_member
+		[HttpPost("{projectId}/add_members")]
+		public async Task<ActionResult<IEnumerable<ProjectResponse>>> AddMember(int projectId, int[] memberIds)
+		{
+			var role = await _service.AddMembersToProject(projectId, memberIds);
 			return Ok(role);
 		}
 

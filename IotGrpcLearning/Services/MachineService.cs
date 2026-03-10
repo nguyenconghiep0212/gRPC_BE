@@ -97,8 +97,7 @@ namespace IotGrpcLearning.Services
 			// Adding pagination and ordering
 			queryBuilder.Append($" ORDER BY id LIMIT {body.limit} OFFSET {body.offset};");
 
-			cmd.CommandText = queryBuilder.ToString();
-			Console.WriteLine($"Total parameters set: {cmd.Parameters.Count}");
+			cmd.CommandText = queryBuilder.ToString(); 
 
 			using var rdr = await cmd.ExecuteReaderAsync(ct);
 
