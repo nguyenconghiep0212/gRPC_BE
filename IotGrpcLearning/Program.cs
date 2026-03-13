@@ -32,8 +32,8 @@ builder.Services.AddHealthChecks();
 // Configure PasswordOptions from configuration section "Password"
 builder.Services.Configure<PasswordOptions>(builder.Configuration.GetSection("Password"));
 
-// Register the exception middleware's dependencies (ILogger is registered by the host by default).
-// Any additional infra services you add in Phase 1 should be registered here.
+// Register infrastructure services
+builder.AddSingleton();
 
 // Build the app
 var app = builder.Build();

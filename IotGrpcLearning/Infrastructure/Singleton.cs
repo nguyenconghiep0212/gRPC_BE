@@ -10,9 +10,11 @@ namespace IotGrpcLearning.Infrastructure
 			// Seeder singleton
 			builder.Services.AddSingleton<Seeder>();
 
-			// Services singleton
-			// Service
-			builder.Services.AddSingleton<ICommandBus, InMemoryCommandBus>();
+            // Services singleton
+            // Service
+            builder.Services.AddSingleton<ISqlHelper, SqlHelper>();
+            builder.Services.AddSingleton<IPasswordService, PasswordService>();
+            builder.Services.AddSingleton<ICommandBus, InMemoryCommandBus>();
 			builder.Services.AddSingleton<IMachineRegistry, MachineRegistry>();
 
 			// Independent Table
