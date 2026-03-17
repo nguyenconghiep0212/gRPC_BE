@@ -1,10 +1,7 @@
 using IotGrpcLearning.GrpcServices;
 using IotGrpcLearning.Infrastructure;
 using IotGrpcLearning.Interfaces;
-using IotGrpcLearning.Proto;
-using IotGrpcLearning.Services;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.Sqlite;
+using IotGrpcLearning.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -23,25 +20,41 @@ builder.Services.AddCors(o =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
-// Validate and register Sqlite connection factory (extension handles validation and registration)
+// Validate and register Sqlite connection factory
 builder.AddValidatedSqlite();
 
 // Health checks
 builder.Services.AddHealthChecks();
 
-// Configure PasswordOptions from configuration section "Password"
+// Configure PasswordOptions from configuration
 builder.Services.Configure<PasswordOptions>(builder.Configuration.GetSection("Password"));
 
-// Register infrastructure services
-builder.AddSingleton();
+// Register infrastructure services (Phase 2)
+builder.Services.AddSingleton<ISqlHelper, SqlHelper>();
+builder.Services.AddSingleton<IPasswordService, PasswordService>();
+
+// Register lookup cache (Phase 3.4)
+builder.Services.AddSingleton<ILookupCache, LookupCache>();
+
+// Register repositories (Phase 3)
+builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
+builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
+builder.Services.AddScoped<IMachineRepository, MachineRepository>();
 
 // Build the app
 var app = builder.Build();
 
+// Warm up the cache on startup
+using (var scope = app.Services.CreateScope())
+{
+    var cache = scope.ServiceProvider.GetRequiredService<ILookupCache>();
+    await cache.RefreshAsync();
+}
+
 // Add middleware for cross-cutting concerns
 app.UseCors("ui");
 
-// Global exception handling middleware (minimal)
+// Global exception handling middleware
 app.UseMiddleware<ExceptionMiddleware>();
 
 app.UseSwagger();

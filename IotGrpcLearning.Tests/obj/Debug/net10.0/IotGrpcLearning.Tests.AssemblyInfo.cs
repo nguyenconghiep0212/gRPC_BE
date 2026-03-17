@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("IotGrpcLearning.Tests")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+2bf2992663ef52bbc6cb9036d55ccc2a22514ddc")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+4a5a7423b3e5c7d1d31b03d1596d65297870dba2")]
 [assembly: System.Reflection.AssemblyProductAttribute("IotGrpcLearning.Tests")]
 [assembly: System.Reflection.AssemblyTitleAttribute("IotGrpcLearning.Tests")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
