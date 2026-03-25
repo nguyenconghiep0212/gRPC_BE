@@ -1,8 +1,9 @@
+using IotGrpcLearning.Infrastructure;
 using IotGrpcLearning.Interfaces;
 using Microsoft.Extensions.Options;
 using System.Security.Cryptography;
 
-namespace IotGrpcLearning.Infrastructure;
+namespace IotGrpcLearning.Services;
 
 /// <summary>
 /// Provides secure password hashing and verification using PBKDF2.

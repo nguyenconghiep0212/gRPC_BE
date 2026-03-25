@@ -78,7 +78,6 @@ public sealed class ProjectRepository : IProjectRepository
 
         var list = new List<ProjectResponse>();
 
-        // Build query with JOIN to eliminate N+1
         var queryBuilder = new StringBuilder(@"
             SELECT 
                 p.id, p.name, p.customers_id, c.name AS customer_name, 
@@ -89,7 +88,6 @@ public sealed class ProjectRepository : IProjectRepository
 
         using var cmd = conn.CreateCommand();
 
-        // Add filters if present
         if (pagination.filters != null)
         {
             var (filterQuery, parameters) = _sqlHelper.BuildFilterQuery("Projects", pagination.filters);
@@ -103,7 +101,6 @@ public sealed class ProjectRepository : IProjectRepository
             }
         }
 
-        // Add ordering and pagination
         queryBuilder.Append($" ORDER BY p.id LIMIT @limit OFFSET @offset;");
         cmd.Parameters.AddWithValue("@limit", pagination.limit);
         cmd.Parameters.AddWithValue("@offset", pagination.offset);
@@ -116,7 +113,6 @@ public sealed class ProjectRepository : IProjectRepository
             list.Add(MapToProjectResponse(reader));
         }
 
-        // Get total count
         int total = await _sqlHelper.GetTotalCountWithConditions(conn, ct, "Projects", pagination.filters);
 
         return new ListDto<ProjectResponse>(list, total);
@@ -154,6 +150,141 @@ public sealed class ProjectRepository : IProjectRepository
 
         var rows = await cmd.ExecuteNonQueryAsync(ct);
         return rows > 0;
+    }
+
+    /// <summary>
+    /// Gets all members of a project with optimized JOIN (fixes N+1 and bugs).
+    /// </summary>
+    public async Task<List<ProjectMemberResponse>> GetProjectMembersAsync(int projectId, CancellationToken ct = default)
+    {
+        using var conn = _dbFactory.CreateConnection();
+        await conn.OpenAsync(ct);
+
+        var list = new List<ProjectMemberResponse>();
+
+        using var cmd = conn.CreateCommand();
+        cmd.CommandText = @"
+            SELECT 
+                pe.id AS project_employee_id,
+                pe.employee_id,
+                e.avatar_url, e.name AS employee_name, e.email,
+                e.role_id, r.name AS role_name,
+                e.division_id, d.name AS division_name,
+                e.supervisor, sup.name AS supervisor_name,
+                e.site AS employee_site_id, es.name AS employee_site_name,
+                p.id AS project_id, p.name AS project_name,
+                p.customers_id, c.name AS customer_name,
+                p.site AS project_site_id, ps.name AS project_site_name,
+                p.detail
+            FROM ProjectEmployee pe
+            INNER JOIN Employees e ON pe.employee_id = e.id
+            INNER JOIN Projects p ON pe.project_id = p.id
+            LEFT JOIN Roles r ON e.role_id = r.id
+            LEFT JOIN Divisions d ON e.division_id = d.id
+            LEFT JOIN Employees sup ON e.supervisor = sup.id
+            LEFT JOIN Sites es ON e.site = es.id
+            LEFT JOIN Customers c ON p.customers_id = c.id
+            LEFT JOIN Sites ps ON p.site = ps.id
+            WHERE pe.project_id = @projectId
+            ORDER BY pe.id;";
+
+        cmd.Parameters.AddWithValue("@projectId", projectId);
+
+        using var reader = await cmd.ExecuteReaderAsync(ct);
+        
+        // ✅ FIXED: Using WHILE instead of IF
+        while (await reader.ReadAsync(ct))
+        {
+            // ✅ FIXED: Correct column indices
+            var projectEmployeeId = reader.GetInt32(0);
+            var employeeId = reader.GetInt32(1);
+
+            var avatarUrl = reader.GetString(2);
+            var employeeName = reader.GetString(3);
+            var email = reader.GetString(4);
+            var roleId = reader.GetInt32(5);
+            var roleName = reader.IsDBNull(6) ? string.Empty : reader.GetString(6);
+            var divisionId = reader.GetInt32(7);
+            var divisionName = reader.IsDBNull(8) ? string.Empty : reader.GetString(8);
+            var supervisorId = reader.IsDBNull(9) ? (int?)null : reader.GetInt32(9);
+            var supervisorName = reader.IsDBNull(10) ? null : reader.GetString(10);
+            var employeeSiteId = reader.GetInt32(11);
+            var employeeSiteName = reader.IsDBNull(12) ? string.Empty : reader.GetString(12);
+
+            var employeeResponse = new EmployeeResponse(
+                employeeId, avatarUrl, employeeName, email,
+                roleId, roleName, divisionId, divisionName,
+                supervisorId, supervisorName, employeeSiteId, employeeSiteName);
+
+            var projectIdValue = reader.GetInt32(13);
+            var projectName = reader.GetString(14);
+            var customerId = reader.GetInt32(15);
+            var customerName = reader.IsDBNull(16) ? string.Empty : reader.GetString(16);
+            var projectSiteId = reader.GetInt32(17);
+            var projectSiteName = reader.IsDBNull(18) ? string.Empty : reader.GetString(18);
+            var detail = reader.GetString(19);
+
+            var projectResponse = new ProjectResponse(
+                projectIdValue, projectName, customerId, customerName,
+                projectSiteId, projectSiteName, detail);
+
+            list.Add(new ProjectMemberResponse(projectEmployeeId, projectResponse, employeeResponse));
+        }
+
+        return list;
+    }
+
+    /// <summary>
+    /// Adds multiple members to a project with transaction safety.
+    /// </summary>
+    public async Task<List<ProjectMemberDto>> AddProjectMembersAsync(int projectId, int[] employeeIds, CancellationToken ct = default)
+    {
+        if (employeeIds == null || employeeIds.Length == 0)
+            return new List<ProjectMemberDto>();
+
+        using var conn = _dbFactory.CreateConnection();
+        await conn.OpenAsync(ct);
+
+        var list = new List<ProjectMemberDto>();
+
+        using var transaction = conn.BeginTransaction();
+        
+        try
+        {
+            using var cmd = conn.CreateCommand();
+            cmd.Transaction = transaction;
+            cmd.CommandText =
+                "INSERT INTO ProjectEmployee (project_id, employee_id) " +
+                "VALUES (@project_id, @employee_id); " +
+                "SELECT last_insert_rowid();";
+
+            var projectIdParam = cmd.CreateParameter();
+            projectIdParam.ParameterName = "@project_id";
+            projectIdParam.Value = projectId;
+            cmd.Parameters.Add(projectIdParam);
+
+            var employeeIdParam = cmd.CreateParameter();
+            employeeIdParam.ParameterName = "@employee_id";
+            cmd.Parameters.Add(employeeIdParam);
+
+            foreach (var employeeId in employeeIds)
+            {
+                employeeIdParam.Value = employeeId;
+
+                var result = await cmd.ExecuteScalarAsync(ct);
+                var newId = Convert.ToInt32(result);
+                list.Add(new ProjectMemberDto(newId, projectId, employeeId));
+            }
+
+            transaction.Commit();
+        }
+        catch
+        {
+            transaction.Rollback();
+            throw;
+        }
+
+        return list;
     }
 
     private static ProjectResponse MapToProjectResponse(SqliteDataReader reader)
