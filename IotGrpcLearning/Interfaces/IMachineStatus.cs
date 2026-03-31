@@ -2,7 +2,7 @@ using IotGrpcLearning.Models;
 
 namespace IotGrpcLearning.Interfaces;
 
-public interface IMachineStatusRepository
+public interface IMachineStatus
 {
     Task<MachineStatusDto> CreateAsync(MachineStatusDto dto, CancellationToken ct = default);
     Task<MachineStatusDto?> GetByIdAsync(int id, CancellationToken ct = default);

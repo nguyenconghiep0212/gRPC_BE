@@ -1,7 +1,6 @@
 using IotGrpcLearning.GrpcServices;
 using IotGrpcLearning.Infrastructure;
 using IotGrpcLearning.Interfaces;
-using IotGrpcLearning.Repositories;
 using IotGrpcLearning.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
@@ -24,50 +23,24 @@ builder.Services.AddCors(o =>
         .AllowAnyMethod());
 });
 builder.Services.AddEndpointsApiExplorer();
-// Native OpenAPI support (.NET 9+)
-builder.Services.AddOpenApi(options =>
-{
-    options.AddDocumentTransformer((document, context, cancellationToken) =>
+builder.Services.AddSwaggerGen(c => {
+    c.SwaggerDoc("v1", new OpenApiInfo
     {
-        // Set API metadata
-        document.Info = new OpenApiInfo
-        {
-            Title = "Factory API",
-            Version = "v1",
-            Description = "API for IoT device and factory management",
-            Contact = new OpenApiContact
-            {
-                Name = "Factory API Team",
-                Email = "support@factory.com"
-            }
-        };
-
-        // Add JWT Bearer authentication scheme
-        document.Components ??= new OpenApiComponents();
-        document.Components.SecuritySchemes ??= new Dictionary<string, IOpenApiSecurityScheme>();
-        
-        document.Components.SecuritySchemes["Bearer"] = new OpenApiSecurityScheme
-        {
-            Type = SecuritySchemeType.Http,
-            Scheme = "bearer",
-            BearerFormat = "JWT",
-            Description = "JWT Authorization header using the Bearer scheme. Enter your token in the text input below.",
-            In = ParameterLocation.Header,
-            Name = "Authorization"
-        };
-
-        // Apply security requirement globally
-        document.Security = [
-            new OpenApiSecurityRequirement
-            {
-                {
-                    new OpenApiSecuritySchemeReference("Bearer"),
-                    new List<string>()
-                }
-            }
-        ];
-
-        return Task.CompletedTask;
+        Title = "JWTToken_Auth_API",
+        Version = "v1"
+    });
+    c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme()
+    {
+        Name = "Authorization",
+        Type = SecuritySchemeType.ApiKey,
+        Scheme = "Bearer",
+        BearerFormat = "JWT",
+        In = ParameterLocation.Header,
+        Description = "JWT Authorization header using the Bearer scheme. \r\n\r\n Enter 'Bearer' [space] and then your token in the text input below.\r\n\r\nExample: \"Bearer 1safsfsdfdfd\"",
+    });
+    c.AddSecurityRequirement(document => new OpenApiSecurityRequirement
+    {
+        [new OpenApiSecuritySchemeReference("bearer", document)] = []
     });
 });
 
@@ -97,6 +70,8 @@ builder.Services.AddAuthentication(options =>
 
 builder.Services.AddAuthorization();
 
+builder.AddSingleton();
+
 // Validate and register Sqlite connection factory
 builder.AddValidatedSqlite();
 
@@ -106,27 +81,11 @@ builder.Services.AddHealthChecks();
 // Configure PasswordOptions from configuration
 builder.Services.Configure<PasswordOptions>(builder.Configuration.GetSection("Password"));
 
-// Register infrastructure services (Phase 2)
-builder.Services.AddSingleton<ISqlHelper, SqlHelper>();
-builder.Services.AddSingleton<IPasswordService, PasswordService>();
-
-// Register lookup cache (Phase 3.4)
-builder.Services.AddSingleton<ILookupCache, LookupCache>();
-
-// Register repositories (Phase 3) - All SOLID compliant
-builder.Services.AddScoped<IProjectRepository, ProjectRepository>();
-builder.Services.AddScoped<IEmployeeRepository, EmployeeRepository>();
-builder.Services.AddScoped<IMachineRepository, MachineRepository>();
-builder.Services.AddScoped<IRoleRepository, RoleRepository>();
-builder.Services.AddScoped<IMachineStatusRepository, MachineStatusRepository>();
-builder.Services.AddScoped<IUserRepository, UserRepository>();
-
-// Register application services
-//builder.Services.AddScoped<IAuthService, PasswordService>();
-
+  
 // Build the app
-var app = builder.Build();
-app.MapOpenApi();
+var app = builder.Build(); 
+app.UseSwagger();
+app.UseSwaggerUI();
 
 // Warm up the cache on startup
 using (var scope = app.Services.CreateScope())
@@ -140,9 +99,6 @@ app.UseCors("ui");
 
 // Global exception handling middleware
 app.UseMiddleware<ExceptionMiddleware>();
-
-app.UseSwagger();
-app.UseSwaggerUI();
 
 // Add authentication & authorization middleware
 app.UseAuthentication();

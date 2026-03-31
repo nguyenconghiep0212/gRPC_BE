@@ -5,7 +5,7 @@ namespace IotGrpcLearning.Interfaces;
 /// <summary>
 /// Repository for User data access.
 /// </summary>
-public interface IUserRepository
+public interface IUser
 {
     Task<UserDto?> GetByEmployeeIdAsync(int employeeId, CancellationToken ct = default);
     Task<UserDto?> GetByUsernameAsync(string username, CancellationToken ct = default);

@@ -10,8 +10,7 @@ public sealed record LoginRequestDto(
 
 public sealed record LoginResponseDto(
     int UserId,
-    string Email,
-    string Name,
+    string Username,
     string Token,
     DateTime ExpiresAt
 );

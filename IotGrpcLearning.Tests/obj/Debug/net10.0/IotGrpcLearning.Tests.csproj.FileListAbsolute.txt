@@ -156,3 +156,13 @@ D:\Personal\gRPC_BE\IotGrpcLearning.Tests\obj\Debug\net10.0\refint\IotGrpcLearni
 D:\Personal\gRPC_BE\IotGrpcLearning.Tests\obj\Debug\net10.0\IotGrpcLearning.Tests.pdb
 D:\Personal\gRPC_BE\IotGrpcLearning.Tests\obj\Debug\net10.0\IotGrpcLearning.Tests.genruntimeconfig.cache
 D:\Personal\gRPC_BE\IotGrpcLearning.Tests\obj\Debug\net10.0\ref\IotGrpcLearning.Tests.dll
+D:\Personal\gRPC_BE\IotGrpcLearning.Tests\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Personal\gRPC_BE\IotGrpcLearning.Tests\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
+D:\Personal\gRPC_BE\IotGrpcLearning.Tests\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Personal\gRPC_BE\IotGrpcLearning.Tests\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Personal\gRPC_BE\IotGrpcLearning.Tests\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
+D:\Personal\gRPC_BE\IotGrpcLearning.Tests\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.dll
+D:\Personal\gRPC_BE\IotGrpcLearning.Tests\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Personal\gRPC_BE\IotGrpcLearning.Tests\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
+D:\Personal\gRPC_BE\IotGrpcLearning.Tests\bin\Debug\net10.0\Scalar.AspNetCore.dll
+D:\Personal\gRPC_BE\IotGrpcLearning.Tests\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll

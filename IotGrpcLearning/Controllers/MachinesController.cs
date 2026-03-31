@@ -10,9 +10,9 @@ namespace IotGrpcLearning.Controllers;
 [Route("api/devices")]
 public class MachinesController : ControllerBase
 {
-	private readonly IMachineService _service;
+	private readonly IMachine _service;
 
-	public MachinesController(IMachineService service)
+	public MachinesController(IMachine service)
 	{
 		_service = service;
 	}
@@ -31,7 +31,7 @@ public class MachinesController : ControllerBase
 	[HttpGet("{machineId}/detail")]
 	public async Task<ActionResult<MachineResponse>> Detail(int machineId)
 	{
-		var d = await _service.GetAsync(machineId);
+		var d = await _service.GetByIdAsync(machineId);
 		if (d is null)
 			return NotFound(new { error = "machine not found" });
 

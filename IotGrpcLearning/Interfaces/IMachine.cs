@@ -2,10 +2,7 @@ using IotGrpcLearning.Models;
 
 namespace IotGrpcLearning.Interfaces;
 
-/// <summary>
-/// Repository for Machine data access with optimized queries.
-/// </summary>
-public interface IMachineRepository
+public interface IMachine
 {
     Task<MachineDto> CreateAsync(MachineDto dto, CancellationToken ct = default);
     Task<MachineResponse?> GetByIdAsync(int id, CancellationToken ct = default);

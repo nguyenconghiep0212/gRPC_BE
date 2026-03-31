@@ -44,7 +44,7 @@ namespace IotGrpcLearning.Controllers
 		[HttpGet("{projectId}/detail")]
 		public async Task<ActionResult<IEnumerable<ProjectResponse>>> Detail(int projectId)
 		{
-			var role = await _service.GetAsync(projectId);
+			var role = await _service.GetByIdAsync(projectId);
 			return Ok(role);
 		}
 
@@ -52,7 +52,7 @@ namespace IotGrpcLearning.Controllers
 		[HttpGet("{projectId}/get_members")]
 		public async Task<ActionResult<IEnumerable<ProjectResponse>>> GetMembers(int projectId)
 		{
-			var role = await _service.GetProjectMembers(projectId);
+			var role = await _service.GetProjectMembersAsync(projectId);
 			return Ok(role);
 		}
 
@@ -60,7 +60,7 @@ namespace IotGrpcLearning.Controllers
 		[HttpPost("{projectId}/add_members")]
 		public async Task<ActionResult<IEnumerable<ProjectResponse>>> AddMember(int projectId, int[] memberIds)
 		{
-			var role = await _service.AddMembersToProject(projectId, memberIds);
+			var role = await _service.AddProjectMembersAsync(projectId, memberIds);
 			return Ok(role);
 		}
 

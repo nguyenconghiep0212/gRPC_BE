@@ -10,11 +10,11 @@ namespace IotGrpcLearning.Controllers;
 [Route("api/devicesRegistry")]
 public class MachinesRegistryController : ControllerBase
 {
-	private readonly IMachineService _service;
+	private readonly IMachine _service;
 	private readonly IMachineRegistry _registry;
 	private readonly ICommandBus _bus;
 
-	public MachinesRegistryController(IMachineService service, IMachineRegistry registry, ICommandBus bus)
+	public MachinesRegistryController(IMachine service, IMachineRegistry registry, ICommandBus bus)
 	{
 		_service = service;
 		_registry = registry;
@@ -33,7 +33,7 @@ public class MachinesRegistryController : ControllerBase
 
 		// Optional: validate device exists in registry
 		// If you prefer allowing enqueue even when offline, remove this block.
-		var d = _service.GetAsync(deviceId);
+		var d = _service.GetByIdAsync(deviceId);
 		if (d is null)
 			return NotFound(new { error = "device not found" });
 

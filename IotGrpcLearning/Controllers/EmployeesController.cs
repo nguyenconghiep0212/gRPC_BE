@@ -47,7 +47,7 @@ namespace IotGrpcLearning.Controllers
 		[HttpGet("{employeeId}/detail")]
 		public async Task<ActionResult<IEnumerable<EmployeeResponse>>> Detail(int employeeId)
 		{
-			var employee = await _service.GetAsync(employeeId);
+			var employee = await _service.GetByIdAsync(employeeId);
 			return Ok(employee);
 		}
 

@@ -1,0 +1,718 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>IotGrpcLearning</name>
+    </assembly>
+    <members>
+        <member name="M:IotGrpcLearning.Controllers.AuthController.Login(IotGrpcLearning.Models.LoginRequestDto,System.Threading.CancellationToken)">
+            <summary>
+            Authenticates a user with email and password.
+            </summary>
+            <param name="request">Login credentials</param>
+            <param name="ct">Cancellation token</param>
+            <returns>Authentication result with JWT token</returns>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.AuthController.Register(IotGrpcLearning.Models.RegisterRequestDto,System.Threading.CancellationToken)">
+            <summary>
+            Registers a new user account.
+            </summary>
+            <param name="request">Registration details</param>
+            <param name="ct">Cancellation token</param>
+            <returns>Authentication result with JWT token</returns>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.AuthController.ValidateToken(System.Threading.CancellationToken)">
+            <summary>
+            Validates the current JWT token.
+            </summary>
+            <param name="ct">Cancellation token</param>
+            <returns>User information if token is valid</returns>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.AuthController.ChangePassword(IotGrpcLearning.Models.ChangePasswordRequestDto,System.Threading.CancellationToken)">
+            <summary>
+            Changes the password for the authenticated user.
+            </summary>
+            <param name="request">Old and new password</param>
+            <param name="ct">Cancellation token</param>
+            <returns>Success status</returns>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.SeedController.RemoveAllTableData(System.Threading.CancellationToken)">
+            <summary>
+            DELETE /api/seed/remove_all
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.SeedController.SeedAll(System.Threading.CancellationToken)">
+            <summary>
+            POST /api/seed/seed_all
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.SeedController.SeedVendors(System.Threading.CancellationToken)">
+            <summary>
+            POST /api/seed/vendors
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.SeedController.SeedCustomers(System.Threading.CancellationToken)">
+            <summary>
+            POST /api/seed/customer
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.SeedController.SeedSites(System.Threading.CancellationToken)">
+            <summary>
+            POST /api/seed/sites
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.SeedController.SeedRoles(System.Threading.CancellationToken)">
+            <summary>
+            POST /api/seed/roles
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.SeedController.SeedDivisions(System.Threading.CancellationToken)">
+            <summary>
+            POST /api/seed/divisions
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.SeedController.SeedMachines(System.Threading.CancellationToken)">
+            <summary>
+            POST /api/seed/machines
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.SeedController.SeedEmployees(System.Threading.CancellationToken)">
+            <summary>
+            POST /api/seed/employees
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.SeedController.SeedProjects(System.Threading.CancellationToken)">
+            <summary>
+            POST /api/seed/projects
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.SeedController.SeedProjectMember(System.Threading.CancellationToken)">
+            <summary>
+            POST /api/seed/project_member
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Controllers.SeedController.SeedTestSuite(System.Threading.CancellationToken)">
+            <summary>
+            POST /api/seed/testsuite
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Infrastructure.ExceptionMiddleware">
+            <summary>
+            Minimal global exception middleware that logs and returns a consistent JSON error response.
+            Add to pipeline early with: app.UseMiddleware&lt;ExceptionMiddleware&gt;();
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Infrastructure.IdentifierSanitizer">
+            <summary>
+            Validates SQL identifiers (table/column names) to prevent SQL injection.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Infrastructure.IdentifierSanitizer.IdentifierPattern">
+            <remarks>
+            Pattern:<br/>
+            <code>^[a-zA-Z_][a-zA-Z0-9_]*$</code><br/>
+            Options:<br/>
+            <code>RegexOptions.Compiled</code><br/>
+            Explanation:<br/>
+            <code>
+            ○ Match if at the beginning of the string.<br/>
+            ○ Match a character in the set [A-Z_a-z].<br/>
+            ○ Match a character in the set [0-9A-Z_a-z] atomically any number of times.<br/>
+            ○ Match if at the end of the string or if before an ending newline.<br/>
+            </code>
+            </remarks>
+        </member>
+        <member name="M:IotGrpcLearning.Infrastructure.IdentifierSanitizer.ValidateIdentifier(System.String,System.String)">
+            <summary>
+            Validates that a string is a safe SQL identifier.
+            </summary>
+            <exception cref="T:System.ArgumentException">Thrown if identifier is invalid.</exception>
+        </member>
+        <member name="M:IotGrpcLearning.Infrastructure.IdentifierSanitizer.QuoteIdentifier(System.String)">
+            <summary>
+            Safely quotes an identifier for use in SQL.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Infrastructure.LookupCache">
+            <summary>
+            In-memory cache for frequently-accessed lookup tables.
+            Thread-safe and lazy-loaded.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Infrastructure.PasswordOptions">
+            <summary>
+            Configuration options for password hashing.
+            </summary>
+        </member>
+        <member name="P:IotGrpcLearning.Infrastructure.PasswordOptions.SaltSize">
+            <summary>
+            Salt size in bytes. Default is 16 (128 bits).
+            </summary>
+        </member>
+        <member name="P:IotGrpcLearning.Infrastructure.PasswordOptions.KeySize">
+            <summary>
+            Key size in bytes. Default is 32 (256 bits).
+            </summary>
+        </member>
+        <member name="P:IotGrpcLearning.Infrastructure.PasswordOptions.Iterations">
+            <summary>
+            Number of PBKDF2 iterations. Default is 100,000.
+            Higher values increase security but also computation time.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Infrastructure.Seeder.ClearAllDataAsync(System.Threading.CancellationToken)">
+            <summary>
+            Delete all rows from known application tables so seeding can start from a clean state.
+            Uses a transaction and temporarily disables foreign key enforcement.
+            WARNING: destructive operation — execute only in non-production environments.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Infrastructure.Seeder.SeedVendorAsync(System.Threading.CancellationToken)">
+            <summary>
+            Idempotently inserts a small set of sample into tables.
+            Uses a transaction and parameterized SQL to avoid SQL injection.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Infrastructure.SqlHelper">
+            <summary>
+            Provides SQL utility methods for common database operations.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Infrastructure.SqliteExtensions.AddValidatedSqlite(Microsoft.AspNetCore.Builder.WebApplicationBuilder,System.String,System.String)">
+            <summary>
+            Validates the configured Sqlite Data Source file (throws if missing) and registers ISqliteConnectionFactory.
+            Must be called before builder.Build().
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Interfaces.IAuthService">
+            <summary>
+            Service for authentication operations.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.IAuthService.LoginAsync(IotGrpcLearning.Models.LoginRequestDto,System.Threading.CancellationToken)">
+            <summary>
+            Authenticates a user with email and password.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.IAuthService.RegisterAsync(IotGrpcLearning.Models.RegisterRequestDto,System.Threading.CancellationToken)">
+            <summary>
+            Registers a new user.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.IAuthService.ValidateTokenAsync(System.String,System.Threading.CancellationToken)">
+            <summary>
+            Validates a JWT token and returns user info.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.IAuthService.ChangePasswordAsync(System.Int32,System.String,System.String,System.Threading.CancellationToken)">
+            <summary>
+            Changes user password.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Interfaces.ILookupCache">
+            <summary>
+            Provides cached access to frequently-used lookup tables.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.ILookupCache.GetRoleNameAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Gets a role name by ID. Returns null if not found.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.ILookupCache.GetSiteNameAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Gets a site name by ID. Returns null if not found.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.ILookupCache.GetVendorNameAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Gets a vendor name by ID. Returns null if not found.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.ILookupCache.GetDivisionNameAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Gets a division name by ID. Returns null if not found.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.ILookupCache.GetCustomerNameAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Gets a customer name by ID. Returns null if not found.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.ILookupCache.RefreshAsync(System.Threading.CancellationToken)">
+            <summary>
+            Forces a refresh of all cached data.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Interfaces.IPasswordService">
+            <summary>
+            Provides secure password hashing and verification.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.IPasswordService.HashPassword(System.String)">
+            <summary>
+            Hashes a password using PBKDF2 with a random salt.
+            </summary>
+            <param name="password">The plain-text password to hash.</param>
+            <returns>A tuple containing the Base64-encoded hash and salt.</returns>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.IPasswordService.VerifyPassword(System.String,System.String,System.String)">
+            <summary>
+            Verifies a password against a stored hash and salt.
+            </summary>
+            <param name="password">The plain-text password to verify.</param>
+            <param name="storedHash">The stored Base64-encoded hash.</param>
+            <param name="storedSalt">The stored Base64-encoded salt.</param>
+            <returns>True if the password matches; otherwise, false.</returns>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.IPasswordService.HashPasswordWithMetadata(System.String)">
+            <summary>
+            Hashes a password and returns it in a metadata format (for future migration).
+            </summary>
+            <param name="password">The plain-text password to hash.</param>
+            <returns>A formatted string containing version, iterations, salt, and hash.</returns>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.IPasswordService.VerifyPasswordWithMetadata(System.String,System.String)">
+            <summary>
+            Verifies a password against a metadata-formatted hash.
+            </summary>
+            <param name="password">The plain-text password to verify.</param>
+            <param name="storedHashWithMetadata">The stored hash with metadata.</param>
+            <returns>True if the password matches; otherwise, false.</returns>
+        </member>
+        <member name="T:IotGrpcLearning.Interfaces.ISqlHelper">
+            <summary>
+            Provides SQL utility methods for common database operations.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.ISqlHelper.GetPropertyTableAsync(Microsoft.Data.Sqlite.SqliteConnection,System.Threading.CancellationToken,System.String,System.String,System.String,System.String)">
+            <summary>
+            Retrieves a single property value from a table based on a column filter.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.ISqlHelper.GetTotalCountFromTable(Microsoft.Data.Sqlite.SqliteConnection,System.Threading.CancellationToken,System.String)">
+            <summary>
+            Gets the total count of rows in a table.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.ISqlHelper.BuildFilterQuery(System.String,System.Collections.Generic.Dictionary{System.String,System.String[]})">
+            <summary>
+            Builds a WHERE clause with LIKE conditions for filtering and returns parameterized query parts.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Interfaces.ISqlHelper.GetTotalCountWithConditions(Microsoft.Data.Sqlite.SqliteConnection,System.Threading.CancellationToken,System.String,System.Collections.Generic.Dictionary{System.String,System.String[]})">
+            <summary>
+            Gets the total count of rows in a table with filter conditions applied.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Interfaces.IUser">
+            <summary>
+            Repository for User data access.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Models.AuthResultDto">
+            <summary>
+            Result of authentication operation.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Models.AuthResultDto.#ctor(System.Boolean,System.String,IotGrpcLearning.Models.LoginResponseDto)">
+            <summary>
+            Result of authentication operation.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Models.ChangePasswordRequestDto">
+            <summary>
+            Request model for changing password.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Models.ChangePasswordRequestDto.#ctor(System.String,System.String)">
+            <summary>
+            Request model for changing password.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Models.LoginRequestDto">
+            <summary>
+            Request model for user login.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Models.LoginRequestDto.#ctor(System.String,System.String)">
+            <summary>
+            Request model for user login.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Models.RegisterRequestDto">
+            <summary>
+            Request model for user registration.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Models.RegisterRequestDto.#ctor(System.String,System.String,System.Int32,System.Int32)">
+            <summary>
+            Request model for user registration.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Models.UserDto">
+            <summary>
+            User data model.
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Models.UserDto.#ctor(System.Int32,System.Int32,System.String,System.String,System.String,System.Boolean,System.DateTime,System.DateTime,System.DateTime)">
+            <summary>
+            User data model.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Services.AuthService">
+            <summary>
+            Service responsible for user authentication and JWT token management.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Services.PasswordService">
+            <summary>
+            Provides secure password hashing and verification using PBKDF2.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Services.ProjectService">
+            <summary>
+            Service layer for Project operations.
+            Delegates all data access to IProjectRepository (follows SOLID principles).
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Services.ProjectService.GetProjectMembersAsync(System.Int32,System.Threading.CancellationToken)">
+            <summary>
+            Gets all members of a project with optimized JOIN (fixes N+1 and bugs).
+            </summary>
+        </member>
+        <member name="M:IotGrpcLearning.Services.ProjectService.AddProjectMembersAsync(System.Int32,System.Int32[],System.Threading.CancellationToken)">
+            <summary>
+            Adds multiple members to a project with transaction safety.
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Proto.DeviceReflection">
+            <summary>Holder for reflection information generated from Protos/device.proto</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.DeviceReflection.Descriptor">
+            <summary>File descriptor for Protos/device.proto</summary>
+        </member>
+        <member name="T:IotGrpcLearning.Proto.DeviceInitRequest">
+            <summary>
+            A device greets the gateway once it connects
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceInitRequest.DeviceIdFieldNumber">
+            <summary>Field number for the "device_id" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.DeviceInitRequest.DeviceId">
+            <summary>
+            e.g., "station 1"
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceInitRequest.DeviceNameFieldNumber">
+            <summary>Field number for the "device_name" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.DeviceInitRequest.DeviceName">
+            <summary>
+            e.g., "temperature sensor"
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceInitRequest.FwVersionFieldNumber">
+            <summary>Field number for the "fw_version" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.DeviceInitRequest.FwVersion">
+            <summary>
+            firmware version, e.g., "1.0.3"
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceInitResponse.MessageFieldNumber">
+            <summary>Field number for the "message" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.DeviceInitResponse.Message">
+            <summary>
+            friendly text
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceInitResponse.ServerUnixMsFieldNumber">
+            <summary>Field number for the "server_unix_ms" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.DeviceInitResponse.ServerUnixMs">
+            <summary>
+            server time in ms since epoch
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Proto.TelemetryRequest">
+            <summary>
+            Telemetry Data 
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.TelemetryRequest.DeviceIdFieldNumber">
+            <summary>Field number for the "device_id" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.TelemetryRequest.DeviceId">
+            <summary>
+            which device sent this
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.TelemetryRequest.TempatureFieldNumber">
+            <summary>Field number for the "tempature" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.TelemetryRequest.Tempature">
+            <summary>
+            numeric value
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.TelemetryRequest.UnixMsFieldNumber">
+            <summary>Field number for the "unix_ms" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.TelemetryRequest.UnixMs">
+            <summary>
+            event time (ms since epoch)
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.TelemetryRequest.TagsFieldNumber">
+            <summary>Field number for the "tags" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.TelemetryRequest.Tags">
+            <summary>
+            optional labels: zone=A1, unit=C
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.TelemetryResponse.AcceptedFieldNumber">
+            <summary>Field number for the "accepted" field.</summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.TelemetryResponse.RejectedFieldNumber">
+            <summary>Field number for the "rejected" field.</summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.TelemetryResponse.NoteFieldNumber">
+            <summary>Field number for the "note" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.TelemetryResponse.Note">
+            <summary>
+            optional info (e.g., "ok", "some invalid")
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Proto.DeviceStatusRequest">
+            <summary>
+            Heartbeat status from device → server
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceStatusRequest.DeviceIdFieldNumber">
+            <summary>Field number for the "device_id" field.</summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceStatusRequest.DeviceNameFieldNumber">
+            <summary>Field number for the "device_name" field.</summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceStatusRequest.TemperatureFieldNumber">
+            <summary>Field number for the "temperature" field.</summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceStatusRequest.UnixMsFieldNumber">
+            <summary>Field number for the "unix_ms" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.DeviceStatusRequest.UnixMs">
+            <summary>
+            ms since epoch (time when status was observed)
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceStatusResponse.DeviceIdFieldNumber">
+            <summary>Field number for the "device_id" field.</summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceStatusResponse.DeviceNameFieldNumber">
+            <summary>Field number for the "device_name" field.</summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceStatusResponse.HealthFieldNumber">
+            <summary>Field number for the "health" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.DeviceStatusResponse.Health">
+            <summary>
+            "OK" | "WARN" | "CRIT"
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceStatusResponse.DetailsFieldNumber">
+            <summary>Field number for the "details" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.DeviceStatusResponse.Details">
+            <summary>
+            optional free text
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceStatusResponse.UnixMsFieldNumber">
+            <summary>Field number for the "unix_ms" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.DeviceStatusResponse.UnixMs">
+            <summary>
+            ms since epoch (time when status was observed)
+            </summary>
+        </member>
+        <member name="T:IotGrpcLearning.Proto.DeviceId">
+            <summary>
+            Command message and server-streaming RPC
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.DeviceId.IdFieldNumber">
+            <summary>Field number for the "id" field.</summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.Command.CommandIdFieldNumber">
+            <summary>Field number for the "command_id" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.Command.CommandId">
+            <summary>
+            server-generated GUID
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.Command.NameFieldNumber">
+            <summary>Field number for the "name" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.Command.Name">
+            <summary>
+            e.g., "Ping", "EnterSafeMode"
+            </summary>
+        </member>
+        <member name="F:IotGrpcLearning.Proto.Command.ArgsFieldNumber">
+            <summary>Field number for the "args" field.</summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.Command.Args">
+            <summary>
+            optional, e.g., {"level":"crit"}
+            </summary>
+        </member>
+        <member name="P:IotGrpcLearning.Proto.DeviceGateway.Descriptor">
+            <summary>Service descriptor</summary>
+        </member>
+        <member name="T:IotGrpcLearning.Proto.DeviceGateway.DeviceGatewayBase">
+            <summary>Base class for server-side implementations of DeviceGateway</summary>
+        </member>
+        <member name="M:IotGrpcLearning.Proto.DeviceGateway.DeviceGatewayBase.Init(IotGrpcLearning.Proto.DeviceInitRequest,Grpc.Core.ServerCallContext)">
+            <summary>
+            Unary hello (already implemented)
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:IotGrpcLearning.Proto.DeviceGateway.DeviceGatewayBase.SendTelemetry(Grpc.Core.IAsyncStreamReader{IotGrpcLearning.Proto.TelemetryRequest},Grpc.Core.ServerCallContext)">
+            <summary>
+            Client-streaming telemetry → single ack
+            </summary>
+            <param name="requestStream">Used for reading requests from the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>The response to send back to the client (wrapped by a task).</returns>
+        </member>
+        <member name="M:IotGrpcLearning.Proto.DeviceGateway.DeviceGatewayBase.SubscribeCommands(IotGrpcLearning.Proto.DeviceId,Grpc.Core.IServerStreamWriter{IotGrpcLearning.Proto.Command},Grpc.Core.ServerCallContext)">
+            <summary>
+            Server-streaming (device subscribes; server pushes commands)
+            </summary>
+            <param name="request">The request received from the client.</param>
+            <param name="responseStream">Used for sending responses back to the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>A task indicating completion of the handler.</returns>
+        </member>
+        <member name="M:IotGrpcLearning.Proto.DeviceGateway.DeviceGatewayBase.Heartbeat(Grpc.Core.IAsyncStreamReader{IotGrpcLearning.Proto.DeviceStatusRequest},Grpc.Core.IServerStreamWriter{IotGrpcLearning.Proto.DeviceStatusResponse},Grpc.Core.ServerCallContext)">
+            <summary>
+            Sidirectional heartbeat
+            </summary>
+            <param name="requestStream">Used for reading requests from the client.</param>
+            <param name="responseStream">Used for sending responses back to the client.</param>
+            <param name="context">The context of the server-side call handler being invoked.</param>
+            <returns>A task indicating completion of the handler.</returns>
+        </member>
+        <member name="M:IotGrpcLearning.Proto.DeviceGateway.BindService(IotGrpcLearning.Proto.DeviceGateway.DeviceGatewayBase)">
+            <summary>Creates service definition that can be registered with a server</summary>
+            <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+        <member name="M:IotGrpcLearning.Proto.DeviceGateway.BindService(Grpc.Core.ServiceBinderBase,IotGrpcLearning.Proto.DeviceGateway.DeviceGatewayBase)">
+            <summary>Register service method with a service binder with or without implementation. Useful when customizing the service binding logic.
+            Note: this method is part of an experimental API that can change or be removed without any prior notice.</summary>
+            <param name="serviceBinder">Service methods will be bound by calling <c>AddMethod</c> on this object.</param>
+            <param name="serviceImpl">An object implementing the server-side handling logic.</param>
+        </member>
+        <member name="T:Program">
+            <summary>
+            Auto-generated public partial Program class for top-level statement apps.
+            </summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.IdentifierPattern_0">
+            <summary>Custom <see cref="T:System.Text.RegularExpressions.Regex"/>-derived type for the IdentifierPattern method.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.IdentifierPattern_0.Instance">
+            <summary>Cached, thread-safe singleton instance.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.IdentifierPattern_0.#ctor">
+            <summary>Initializes the instance.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.IdentifierPattern_0.RunnerFactory">
+            <summary>Provides a factory for creating <see cref="T:System.Text.RegularExpressions.RegexRunner"/> instances to be used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.IdentifierPattern_0.RunnerFactory.CreateInstance">
+            <summary>Creates an instance of a <see cref="T:System.Text.RegularExpressions.RegexRunner"/> used by methods on <see cref="T:System.Text.RegularExpressions.Regex"/>.</summary>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.IdentifierPattern_0.RunnerFactory.Runner">
+            <summary>Provides the runner that contains the custom logic implementing the specified regular expression.</summary>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.IdentifierPattern_0.RunnerFactory.Runner.Scan(System.ReadOnlySpan{System.Char})">
+            <summary>Scan the <paramref name="inputSpan"/> starting from base.runtextstart for the next match.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.IdentifierPattern_0.RunnerFactory.Runner.TryFindNextPossibleStartingPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Search <paramref name="inputSpan"/> starting from base.runtextpos for the next location a match could possibly start.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if a possible match was found; false if no more matches are possible.</returns>
+        </member>
+        <member name="M:System.Text.RegularExpressions.Generated.IdentifierPattern_0.RunnerFactory.Runner.TryMatchAtCurrentPosition(System.ReadOnlySpan{System.Char})">
+            <summary>Determine whether <paramref name="inputSpan"/> at base.runtextpos is a match for the regular expression.</summary>
+            <param name="inputSpan">The text being scanned by the regular expression.</param>
+            <returns>true if the regular expression matches at the current position; otherwise, false.</returns>
+        </member>
+        <member name="T:System.Text.RegularExpressions.Generated.Utilities">
+            <summary>Helper methods used by generated <see cref="T:System.Text.RegularExpressions.Regex"/>-derived implementations.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout">
+            <summary>Default timeout value set in <see cref="T:System.AppContext"/>, or <see cref="F:System.Text.RegularExpressions.Regex.InfiniteMatchTimeout"/> if none was set.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_hasTimeout">
+            <summary>Whether <see cref="F:System.Text.RegularExpressions.Generated.Utilities.s_defaultTimeout"/> is non-infinite.</summary>
+        </member>
+        <member name="F:System.Text.RegularExpressions.Generated.Utilities.s_asciiWordChars">
+            <summary>Supports searching for characters in or not in "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ_abcdefghijklmnopqrstuvwxyz".</summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type)">
+            <summary>
+            Generates a documentation comment ID for a type.
+            Example: T:Namespace.Outer+Inner`1 becomes T:Namespace.Outer.Inner`1
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.PropertyInfo)">
+            <summary>
+            Generates a documentation comment ID for a property.
+            Example: P:Namespace.ContainingType.PropertyName or for an indexer P:Namespace.ContainingType.Item(System.Int32)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Type,System.String)">
+            <summary>
+            Generates a documentation comment ID for a property given its container type and property name.
+            Example: P:Namespace.ContainingType.PropertyName
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.CreateDocumentationId(System.Reflection.MethodInfo)">
+            <summary>
+            Generates a documentation comment ID for a method (or constructor).
+            For example:
+              M:Namespace.ContainingType.MethodName(ParamType1,ParamType2)~ReturnType
+              M:Namespace.ContainingType.#ctor(ParamType)
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.GetTypeDocId(System.Type,System.Boolean,System.Boolean)">
+            <summary>
+            Generates a documentation ID string for a type.
+            This method handles nested types (replacing '+' with '.'),
+            generic types, arrays, pointers, by-ref types, and generic parameters.
+            The <paramref name="includeGenericArguments"/> flag controls whether
+            constructed generic type arguments are emitted, while <paramref name="omitGenericArity"/>
+            controls whether the generic arity marker (e.g. "`1") is appended.
+            </summary>
+        </member>
+        <member name="M:Microsoft.AspNetCore.OpenApi.Generated.DocumentationCommentIdHelper.NormalizeDocId(System.String)">
+            <summary>
+            Normalizes a documentation comment ID to match the compiler-style format.
+            Strips the return type suffix for ordinary methods but retains it for conversion operators.
+            </summary>
+            <param name="docId">The documentation comment ID to normalize.</param>
+            <returns>The normalized documentation comment ID.</returns>
+        </member>
+    </members>
+</doc>

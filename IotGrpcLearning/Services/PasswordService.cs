@@ -114,4 +114,9 @@ public sealed class PasswordService : IPasswordService
 
         return VerifyPassword(password, hash, salt);
     }
+
+    public async Task<bool> ChangePasswordAsync(int userId, string oldPassword, string newPassword, CancellationToken ct)
+    {
+        throw new NotImplementedException();
+    }
 }

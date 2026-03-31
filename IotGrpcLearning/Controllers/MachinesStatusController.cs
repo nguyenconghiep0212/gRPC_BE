@@ -10,26 +10,18 @@ namespace IotGrpcLearning.Controllers;
 [Route("api/machine_status")]
 public class MachineStatusController : ControllerBase
 {
-	private readonly IMachineStatusService _service;
+	private readonly IMachineStatus _service;
 
-	public MachineStatusController(IMachineStatusService service)
+	public MachineStatusController(IMachineStatus service)
 	{
 		_service = service;
 	}
 
 	// POST /api/machine_status/list
 	[HttpPost("list")]
-	public async Task<ActionResult<IEnumerable<MachineStatusDto>>> List(PaginationDto body)
+	public async Task<ActionResult<ListDto<MachineStatusDto>>> List(PaginationDto body)
 	{
-		var devices = await _service.GetAllAsync(body);
-		var result = devices.Select(d => new MachineStatusDto(
-			d.Id,
-			d.MachineId,
-			d.Health,
-			d.IsOnline,
-			d.LastOnline
-			));
-
+		var devices = await _service.GetAllAsync(body); 
 		return Ok(devices);
 	}
 
@@ -37,7 +29,7 @@ public class MachineStatusController : ControllerBase
 	[HttpGet("{machineStatusId}/detail")]
 	public async Task<ActionResult<MachineStatusDto>> Detail(int machineStatusId)
 	{
-		var d = await _service.GetAsync(machineStatusId);
+		var d = await _service.GetByIdAsync(machineStatusId);
 		if (d is null)
 			return NotFound(new { error = "machine not found" });
 

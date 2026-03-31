@@ -9,12 +9,10 @@ namespace IotGrpcLearning.Controllers;
 public class AuthController : ControllerBase
 {
     private readonly IAuthService _authService;
-    private readonly ILogger<AuthController> _logger;
 
     public AuthController(IAuthService authService, ILogger<AuthController> logger)
     {
         _authService = authService ?? throw new ArgumentNullException(nameof(authService));
-        _logger = logger ?? throw new ArgumentNullException(nameof(logger));
     }
 
     /// <summary>

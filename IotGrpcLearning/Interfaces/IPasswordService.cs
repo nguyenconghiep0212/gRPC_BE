@@ -35,4 +35,5 @@ public interface IPasswordService
     /// <param name="storedHashWithMetadata">The stored hash with metadata.</param>
     /// <returns>True if the password matches; otherwise, false.</returns>
     bool VerifyPasswordWithMetadata(string password, string storedHashWithMetadata);
+
 }

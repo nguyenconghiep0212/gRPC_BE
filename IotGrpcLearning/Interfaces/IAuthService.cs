@@ -22,6 +22,7 @@ public interface IAuthService
     /// </summary>
     Task<UserDto?> ValidateTokenAsync(string token, CancellationToken ct = default);
 
+
     /// <summary>
     /// Changes user password.
     /// </summary>

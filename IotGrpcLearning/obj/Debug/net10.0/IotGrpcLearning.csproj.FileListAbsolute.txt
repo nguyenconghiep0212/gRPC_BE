@@ -157,3 +157,15 @@ D:\Personal\gRPC_BE\IotGrpcLearning\obj\Debug\net10.0\IotGrpcLearning.pdb
 D:\Personal\gRPC_BE\IotGrpcLearning\obj\Debug\net10.0\IotGrpcLearning.genruntimeconfig.cache
 D:\Personal\gRPC_BE\IotGrpcLearning\obj\Debug\net10.0\ref\IotGrpcLearning.dll
 D:\Personal\gRPC_BE\IotGrpcLearning\bin\Debug\net10.0\Infrastructure\SeedData\machines.json
+D:\Personal\gRPC_BE\IotGrpcLearning\bin\Debug\net10.0\IotGrpcLearning.xml
+D:\Personal\gRPC_BE\IotGrpcLearning\bin\Debug\net10.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
+D:\Personal\gRPC_BE\IotGrpcLearning\bin\Debug\net10.0\Microsoft.AspNetCore.OpenApi.dll
+D:\Personal\gRPC_BE\IotGrpcLearning\bin\Debug\net10.0\Microsoft.IdentityModel.Abstractions.dll
+D:\Personal\gRPC_BE\IotGrpcLearning\bin\Debug\net10.0\Microsoft.IdentityModel.JsonWebTokens.dll
+D:\Personal\gRPC_BE\IotGrpcLearning\bin\Debug\net10.0\Microsoft.IdentityModel.Logging.dll
+D:\Personal\gRPC_BE\IotGrpcLearning\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.dll
+D:\Personal\gRPC_BE\IotGrpcLearning\bin\Debug\net10.0\Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+D:\Personal\gRPC_BE\IotGrpcLearning\bin\Debug\net10.0\Microsoft.IdentityModel.Tokens.dll
+D:\Personal\gRPC_BE\IotGrpcLearning\bin\Debug\net10.0\Scalar.AspNetCore.dll
+D:\Personal\gRPC_BE\IotGrpcLearning\bin\Debug\net10.0\System.IdentityModel.Tokens.Jwt.dll
+D:\Personal\gRPC_BE\IotGrpcLearning\obj\Debug\net10.0\IotGrpcLearning.xml
